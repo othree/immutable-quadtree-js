@@ -15,6 +15,42 @@ class QuadTree extends QuadTreeRotue {
     this._dt = new options.datatype();
     this._options = options;
   }
+  _replaceRoute (node: Quaternary, route: number[], nodeRoute: Quaternary[]): QuadTree {
+    var i, parent, current;
+    for (i = nodeRoute.length; i > 0; i--) {
+      parent = nodeRoute[i - 1];
+      if (parent) {
+        current = nodeRoute[i - 1].setChild(route[i], current); 
+      } else {
+        parent = new Quaternary();
+        parent._setChild(route[i], current);
+        current = parent;
+      }
+    }
+    return new QuadTree(current, this._levels, this._options);
+  }
+  map(qroute: string, f: (any) => any): QuadTree {
+    this._partialRouteGuard(qroute, this._levels);
+    var route = this._parse(qroute);
+    var i;
+    var leafs, newleafs, newnode;
+    var child, current:Quaternary = this._root, parent;
+    var nodeRoute = [this._root];
+
+    for (i = 0; i < route.length; i++) {
+      child = current.getChild(route[i]);
+      if (!child) { break; }
+      current = child;
+      nodeRoute.push(current);
+    }
+
+    newnode = current.map(this._dt.map(f));
+
+    return current === newnode ?
+      this :
+      this._replaceRoute(newnode, route, nodeRoute);
+
+  }
   add(qroute: string, data: Array<any>|any): QuadTree {
     this._fullRouteGuard(qroute, this._levels);
     var route = this._parse(qroute);
