@@ -22,12 +22,11 @@ class QuadTree extends QuadTreeRotue {
     var route = this._parse(qroute);
     var i;
     var leafs, newleafs;
-    var child, current:Quaternary = this._root, parent;
+    var current:Quaternary = this._root, parent;
     var nodeRoute = [this._root];
 
     for (i = 0; i < route.length; i++) {
-      child = current.getChild(route[i]);
-      current = child;
+      current = current.getChild(route[i]);
       nodeRoute.push(current);
       if (!current) { break; }
     }
