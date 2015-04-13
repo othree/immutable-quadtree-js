@@ -1,42 +1,29 @@
+/// <reference path="quadtree-route.ts" />
 /// <reference path="quaternary.ts" />
-/// <reference path="immutable-map-tool.ts" />
+/// <reference path="immutable-map-type.ts" />
 
-
-class QuadTree {
+class QuadTree extends QuadTreeRotue {
   _root: Quaternary;
   _levels: number;
   _options: Object;
+  _dt: any;
   _Data: any;
-  constructor(root: Quaternary, levels: number, options = {datatype: IMtype}) {
+  constructor(root: Quaternary, levels: number, options) {
+    super();
     this._levels = levels;
     this._root = root || new Quaternary();
+
+    if (options.datatype) {
+      this._dt = new options.datatype();
+    } else {
+      this._dt = new ImmutableMapType();
+    }
+
     this._options = options;
-    this._dt = new options.datatype();
-    this._Data = new this._tool.cons();
-  }
-  _fullRouteGuard(route: string) {
-    if (typeof route !== 'string'
-     || route.length !== this._levels
-     || /[^0-3]/.test(route) ) {
-      throw(new Error("Route incorrect"))
-    }
-  }
-  _partialRouteGuard(route: string) {
-    if (typeof route !== 'string'
-     || route.length > this._levels
-     || /[^0-3]/.test(route) ) {
-      throw(new Error("Route incorrect"))
-    }
-  }
-  _parse(route: string): Array<number> {
-    var nr = [], i;
-    for (i = 0; i < route.length; i++) {
-      nr.push(parseInt(route[i]));
-    }
-    return nr;
+    this._Data = new this._dt.cons();
   }
   add(qroute: string, data: Array<any>|any) {
-    this._fullRouteGuard(qroute);
+    this._fullRouteGuard(qroute, this._levels);
     var route = this._parse(qroute);
     var i;
     var leafs;
