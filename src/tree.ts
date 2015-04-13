@@ -1,18 +1,18 @@
 /// <reference path="quaternary.ts" />
-/// <reference path="immutable.d.ts" />
+/// <reference path="immutable-map-tool.ts" />
 
-import Immutable = require('immutable');
 
 class QuadTree {
   _root: Quaternary;
   _levels: number;
   _options: Object;
   _Data: any;
-  constructor(root: Quaternary, levels: number, options) {
+  constructor(root: Quaternary, levels: number, options = {datatype: IMtype}) {
     this._levels = levels;
     this._root = root || new Quaternary();
     this._options = options;
-    this._Data = Immutable.Map;
+    this._dt = new options.datatype();
+    this._Data = new this._tool.cons();
   }
   _fullRouteGuard(route: string) {
     if (typeof route !== 'string'
@@ -58,17 +58,11 @@ class QuadTree {
 
     if (nodeRoute[this._levels - 1]) {
       leafs = current.getData();
-      leafs = leafs.withMutations(function (map) {
-        var i;
-        for (i = 0; i < data.length; i++) { map.set(data[i]._id, data[i]); }
-      });
+      leafs = this._dt.add(leafs, data)
       current = current.setData(leafs);
     } else {
       leafs = new this._Data();
-      leafs = leafs.withMutations(function (map) {
-        var i;
-        for (i = 0; i < data.length; i++) { map.set(data[i]._id, data[i]); }
-      });
+      leafs = this._dt.add(leafs, data)
       current = new Quaternary();
       current._setData(leafs);
     }
