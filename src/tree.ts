@@ -15,7 +15,7 @@ class QuadTree extends QuadTreeRotue {
     this._root = root || new Quaternary();
     this._dt = new options.datatype();
     this._options = options;
-    this._Data = new this._dt.cons();
+    this._Data = new this._dt.cons;
   }
   add(qroute: string, data: Array<any>|any) {
     this._fullRouteGuard(qroute, this._levels);
