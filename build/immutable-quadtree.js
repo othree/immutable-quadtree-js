@@ -149,9 +149,9 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var QuadTree = (function (_super) {
-    __extends(QuadTree, _super);
-    function QuadTree(root, levels, options) {
+var ImmutableQuadTree = (function (_super) {
+    __extends(ImmutableQuadTree, _super);
+    function ImmutableQuadTree(root, levels, options) {
         _super.call(this);
         options.datatype = options.datatype || ImmutableObjectType;
         this._levels = levels;
@@ -159,7 +159,7 @@ var QuadTree = (function (_super) {
         this._dt = new options.datatype();
         this._options = options;
     }
-    QuadTree.prototype._replaceRoute = function (node, route, nodeRoute) {
+    ImmutableQuadTree.prototype._replaceRoute = function (node, route, nodeRoute) {
         var i, parent, current;
         for (i = nodeRoute.length; i > 0; i--) {
             parent = nodeRoute[i - 1];
@@ -172,9 +172,9 @@ var QuadTree = (function (_super) {
                 current = parent;
             }
         }
-        return new QuadTree(current, this._levels, this._options);
+        return new ImmutableQuadTree(current, this._levels, this._options);
     };
-    QuadTree.prototype.map = function (qroute, f) {
+    ImmutableQuadTree.prototype.map = function (qroute, f) {
         this._partialRouteGuard(qroute, this._levels);
         var route = this._parse(qroute);
         var i;
@@ -194,7 +194,7 @@ var QuadTree = (function (_super) {
             this :
             this._replaceRoute(newnode, route, nodeRoute);
     };
-    QuadTree.prototype.add = function (qroute, data) {
+    ImmutableQuadTree.prototype.add = function (qroute, data) {
         this._fullRouteGuard(qroute, this._levels);
         var route = this._parse(qroute);
         var i;
@@ -235,7 +235,7 @@ var QuadTree = (function (_super) {
                 current = parent;
             }
         }
-        return new QuadTree(current, this._levels, this._options);
+        return new ImmutableQuadTree(current, this._levels, this._options);
     };
-    return QuadTree;
+    return ImmutableQuadTree;
 })(QuadTreeRotue);
