@@ -1,4 +1,4 @@
-class ImmutableMapType {
+class ImmutableObjectType {
   cons: any;
   constructor () {
     this.cons = Object; 

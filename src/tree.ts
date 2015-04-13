@@ -1,6 +1,6 @@
 /// <reference path="quadtree-route.ts" />
 /// <reference path="quaternary.ts" />
-/// <reference path="immutable-map-type.ts" />
+/// <reference path="immutable-object-type.ts" />
 
 class QuadTree extends QuadTreeRotue {
   _root: Quaternary;
@@ -10,7 +10,7 @@ class QuadTree extends QuadTreeRotue {
   _Data: any;
   constructor(root: Quaternary, levels: number, options) {
     super();
-    options.datatype = options.datatype || ImmutableMapType;
+    options.datatype = options.datatype || ImmutableObjectType;
     this._levels = levels;
     this._root = root || new Quaternary();
     this._dt = new options.datatype();
