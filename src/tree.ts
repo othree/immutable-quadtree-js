@@ -41,7 +41,7 @@ class QuadTree extends QuadTreeRotue {
       if (leafs === newleafs) {
         return this;
       }
-      current = current.setData(leafs);
+      current = current.setData(newleafs);
     } else {
       leafs = new this._Data();
       leafs = this._dt.add(leafs, data)
