@@ -10,15 +10,10 @@ class QuadTree extends QuadTreeRotue {
   _Data: any;
   constructor(root: Quaternary, levels: number, options) {
     super();
+    options.datatype = options.datatype || ImmutableMapType;
     this._levels = levels;
     this._root = root || new Quaternary();
-
-    if (options.datatype) {
-      this._dt = new options.datatype();
-    } else {
-      this._dt = new ImmutableMapType();
-    }
-
+    this._dt = new options.datatype();
     this._options = options;
     this._Data = new this._dt.cons();
   }
