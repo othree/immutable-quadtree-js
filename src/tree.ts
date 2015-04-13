@@ -30,9 +30,7 @@ class QuadTree extends QuadTreeRotue {
     var child, current:Quaternary = this._root, parent;
     var nodeRoute = [this._root];
 
-    if (Array.isArray(data)) {
-        data = [data];
-    }
+    if (!Array.isArray(data)) { data = [data]; }
 
     for (i = 0; i < route.length; i++) {
       child = current.getChild(route[i]);
