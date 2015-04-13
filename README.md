@@ -8,7 +8,6 @@ Immutable Quadtree in JS
   * clean
   * keep
   * query
-
 * test
 * array-type
 * abstract data oprtation
