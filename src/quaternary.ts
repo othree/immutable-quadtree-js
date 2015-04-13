@@ -2,7 +2,7 @@
 class Quaternary {
   children: Array<Quaternary|void>;
   data: any;
-  constructor(base: Quaternary) {
+  constructor(base?: Quaternary) {
     var i;
     if (base) {
       this.children = base.children.slice();
