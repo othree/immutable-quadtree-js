@@ -27,26 +27,22 @@ class QuadTree extends QuadTreeRotue {
 
     for (i = 0; i < route.length; i++) {
       child = current.getChild(route[i]);
-      if (!child) {
-        break;
-      }
       current = child;
       nodeRoute.push(current);
+      if (!current) { break; }
     }
 
-    if (nodeRoute[this._levels - 1]) {
+    if (current) {
       leafs = current.getData();
       newleafs = this._dt.add(leafs, data)
       //no change
-      if (leafs === newleafs) {
-        return this;
-      }
+      if (leafs === newleafs) { return this; }
       current = current.setData(newleafs);
     } else {
       leafs = new this._Data();
-      leafs = this._dt.add(leafs, data)
+      newleafs = this._dt.add(leafs, data)
       current = new Quaternary();
-      current._setData(leafs);
+      current._setData(newleafs);
     }
 
     for (i = route.length -1; i > 0; i--) {
