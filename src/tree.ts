@@ -2,7 +2,7 @@
 /// <reference path="quaternary.ts" />
 /// <reference path="immutable-object-type.ts" />
 
-class QuadTree extends QuadTreeRotue {
+class ImmutableQuadTree extends QuadTreeRotue {
   _root: Quaternary;
   _levels: number;
   _options: Object;
@@ -15,7 +15,7 @@ class QuadTree extends QuadTreeRotue {
     this._dt = new options.datatype();
     this._options = options;
   }
-  _replaceRoute (node: Quaternary, route: number[], nodeRoute: Quaternary[]): QuadTree {
+  _replaceRoute (node: Quaternary, route: number[], nodeRoute: Quaternary[]): ImmutableQuadTree {
     var i, parent, current;
     for (i = nodeRoute.length; i > 0; i--) {
       parent = nodeRoute[i - 1];
@@ -27,9 +27,9 @@ class QuadTree extends QuadTreeRotue {
         current = parent;
       }
     }
-    return new QuadTree(current, this._levels, this._options);
+    return new ImmutableQuadTree(current, this._levels, this._options);
   }
-  map(qroute: string, f: (any) => any): QuadTree {
+  map(qroute: string, f: (any) => any): ImmutableQuadTree {
     this._partialRouteGuard(qroute, this._levels);
     var route = this._parse(qroute);
     var i;
@@ -51,7 +51,7 @@ class QuadTree extends QuadTreeRotue {
       this._replaceRoute(newnode, route, nodeRoute);
 
   }
-  add(qroute: string, data: Array<any>|any): QuadTree {
+  add(qroute: string, data: Array<any>|any): ImmutableQuadTree {
     this._fullRouteGuard(qroute, this._levels);
     var route = this._parse(qroute);
     var i;
@@ -90,7 +90,7 @@ class QuadTree extends QuadTreeRotue {
       }
     }
 
-    return new QuadTree(current, this._levels, this._options);
+    return new ImmutableQuadTree(current, this._levels, this._options);
 
   }
 }
