@@ -17,11 +17,11 @@ class QuadTree extends QuadTreeRotue {
     this._options = options;
     this._Data = new this._dt.cons;
   }
-  add(qroute: string, data: Array<any>|any) {
+  add(qroute: string, data: Array<any>|any): QuadTree {
     this._fullRouteGuard(qroute, this._levels);
     var route = this._parse(qroute);
     var i;
-    var leafs;
+    var leafs, newleafs;
     var child, current:Quaternary = this._root, parent;
     var nodeRoute = [this._root];
 
@@ -36,7 +36,11 @@ class QuadTree extends QuadTreeRotue {
 
     if (nodeRoute[this._levels - 1]) {
       leafs = current.getData();
-      leafs = this._dt.add(leafs, data)
+      newleafs = this._dt.add(leafs, data)
+      //no change
+      if (leafs === newleafs) {
+        return this;
+      }
       current = current.setData(leafs);
     } else {
       leafs = new this._Data();
