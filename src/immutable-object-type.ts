@@ -19,5 +19,20 @@ class ImmutableObjectType {
     //no change
     else { return obj; }
   }
+  map (f): (Object) => Object {
+    return function (obj) {
+      var k, newv, newobj;
+      for (k in obj) {
+        newv = f(obj[k]);
+        if (newv && newv !== obj[k]) {
+          if (!newobj) {
+            newobj = Object.create(obj);
+          }
+          newobj[k] = newv;
+        }
+      }
+      return newobj || obj;
+    }
+  }
 };
 
