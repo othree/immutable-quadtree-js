@@ -7,7 +7,7 @@ class ImmutableQuadTree extends QuadTreeRotue {
   _levels: number;
   _options: Object;
   _dt: any;
-  constructor(root: Quaternary, levels: number, options) {
+  constructor(levels: number, options:any = {}, root?: Quaternary) {
     super();
     options.datatype = options.datatype || ImmutableObjectType;
     this._levels = levels;
@@ -27,7 +27,7 @@ class ImmutableQuadTree extends QuadTreeRotue {
 
     return path.current === newnode ?
       this :
-      new ImmutableQuadTree(this._replace(path, newnode), this._levels, this._options);
+      new ImmutableQuadTree(this._levels, this._options, this._replace(path, newnode));
 
   }
   add(qroute: string, data: any[]|any): ImmutableQuadTree {
@@ -48,7 +48,6 @@ class ImmutableQuadTree extends QuadTreeRotue {
       newnode = new Quaternary();
       newnode._setData(newleafs);
     }
-
-    return new ImmutableQuadTree(this._replace(path, newnode), this._levels, this._options);
+    return new ImmutableQuadTree(this._levels, this._options, this._replace(path, newnode));
   }
 }
