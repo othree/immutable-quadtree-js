@@ -15,5 +15,12 @@
   "engines": {
     "node": ">=0.8.0"
   },
+  "devDependencies": {
+    "mocha": "*",
+    "should": "*"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
   "license": "MIT"
 }
