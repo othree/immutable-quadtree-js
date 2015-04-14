@@ -1,3 +1,4 @@
+/// <reference path="quaternary.ts" />
 var QuadTreeRotue = (function () {
     function QuadTreeRotue() {
     }
@@ -21,6 +22,38 @@ var QuadTreeRotue = (function () {
             nr.push(parseInt(route[i]));
         }
         return nr;
+    };
+    QuadTreeRotue.prototype._goto = function (route, current) {
+        var i, nodes = [current];
+        for (i = 0; i < route.length; i++) {
+            current = current.getChild(route[i]);
+            if (!current) {
+                break;
+            }
+            nodes.push(current);
+        }
+        return {
+            current: current,
+            route: route,
+            nodes: nodes
+        };
+    };
+    QuadTreeRotue.prototype._replace = function (path, node) {
+        var route = path.route;
+        var nodes = path.nodes;
+        var i, parent, current;
+        for (i = nodes.length; i > 0; i--) {
+            parent = nodes[i - 1];
+            if (parent) {
+                current = nodes[i - 1].setChild(route[i], current);
+            }
+            else {
+                parent = new Quaternary();
+                parent._setChild(route[i], current);
+                current = parent;
+            }
+        }
+        return current;
     };
     return QuadTreeRotue;
 })();
