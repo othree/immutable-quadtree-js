@@ -78,4 +78,11 @@ class ImmutableQuadTree extends QuadTreeRotue {
       return this;
     }
   }
+  query(qroute): any[] {
+    var list = [];
+    this.map(qroute, function (data) {
+      list.push(data);
+    })
+    return list;
+  }
 }
