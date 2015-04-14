@@ -36,7 +36,7 @@ class Quaternary {
     nq._setChild(i, data);
     return nq;
   }
-  getChild(i: number): Quaternary|void {
+  getChild(i: number): Quaternary {
     return this.children[i];
   }
   hasChild(i: number): boolean {
