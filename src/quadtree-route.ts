@@ -41,7 +41,7 @@ class QuadTreeRotue {
       nodes: nodes
     }
   }
-  _replace (path: Path, node: Quaternary): Quaternary {
+  _replace (path: Path, node?: Quaternary): Quaternary {
     var route = path.route;
     var nodes = path.nodes;
     var i, parent, current = node;
