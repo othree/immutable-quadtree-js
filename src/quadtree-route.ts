@@ -44,12 +44,12 @@ class QuadTreeRotue {
   _replace (path: Path, node: Quaternary): Quaternary {
     var route = path.route;
     var nodes = path.nodes;
-    var i, parent, current;
+    var i, parent, current = node;
 
-    for (i = nodes.length; i > 0; i--) {
-      parent = nodes[i - 1];
+    for (i = route.length - 1; i >= 0; i--) {
+      parent = nodes[i];
       if (parent) {
-        current = nodes[i - 1].setChild(route[i], current); 
+        current = nodes[i].setChild(route[i], current); 
       } else {
         parent = new Quaternary();
         parent._setChild(route[i], current);
