@@ -10,7 +10,7 @@ class ImmutableObjectType {
     var newobj = Object.create(obj);
 
     for (i = 0; i < data.length; i++) {
-      if (newobj[data[i]._id]) {
+      if (!obj[data[i]._id]) {
         newobj[data[i]._id] = data[i];
         flag = true;
       }
