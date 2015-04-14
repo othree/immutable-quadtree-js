@@ -197,7 +197,7 @@ var ImmutableQuadTree = (function (_super) {
         this._partialRouteGuard(qroute, this._levels);
         var route = this._parse(qroute);
         var path = this._goto(route, this._root);
-        //no change
+        //no data
         if (!path.current) {
             return this;
         }
@@ -227,6 +227,17 @@ var ImmutableQuadTree = (function (_super) {
             newnode._setData(newleafs);
         }
         return new ImmutableQuadTree(this._levels, this._options, this._replace(path, newnode));
+    };
+    ImmutableQuadTree.prototype.clean = function (qroute) {
+        this._partialRouteGuard(qroute, this._levels);
+        var route = this._parse(qroute);
+        var path = this._goto(route, this._root);
+        if (path.current && path.current.children.length) {
+            return new ImmutableQuadTree(this._levels, this._options, this._replace(path, null));
+        }
+        else {
+            return this;
+        }
     };
     return ImmutableQuadTree;
 })(QuadTreeRotue);
