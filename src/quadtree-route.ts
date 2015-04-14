@@ -21,7 +21,7 @@ class QuadTreeRotue {
       throw(new Error("Route incorrect"))
     }
   }
-  _parse(route: string): Array<number> {
+  _parse(route: string): number[] {
     var nr = [], i;
     for (i = 0; i < route.length; i++) {
       nr.push(parseInt(route[i]));
