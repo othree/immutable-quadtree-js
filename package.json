@@ -1,0 +1,19 @@
+{
+  "name": "immutable-quadtree",
+  "version": "0.0.1",
+  "description": "Immutable QuadTree",
+  "homepage": "https://github.com/othree/immutable-quadtree-js",
+  "author": {
+    "name": "othree",
+    "url": "https://github.com/othree"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/othree/immutable-quadtree-js.git"
+  },
+  "main": "build/immutable-quadtree.js",
+  "engines": {
+    "node": ">=0.8.0"
+  },
+  "license": "MIT"
+}
