@@ -2,12 +2,6 @@
 /// <reference path="quaternary.ts" />
 /// <reference path="immutable-object-type.ts" />
 
-interface Path {
-  current: Quaternary;
-  route: number[];
-  nodes: Quaternary[];
-}
-
 class ImmutableQuadTree extends QuadTreeRotue {
   _root: Quaternary;
   _levels: number;
@@ -21,40 +15,10 @@ class ImmutableQuadTree extends QuadTreeRotue {
     this._dt = new options.datatype();
     this._options = options;
   }
-  _goto(route: number[]): Path {
-    var i, current = this._root, nodes = [current];
-    for (i = 0; i < route.length; i++) {
-      current = current.getChild(route[i]);
-      if (!current) { break; }
-      nodes.push(current);
-    }
-    return {
-      current: current,
-      route: route,
-      nodes: nodes
-    }
-  }
-  _replace (path: Path, node: Quaternary): ImmutableQuadTree {
-    var route = path.route;
-    var nodes = path.nodes;
-    var i, parent, current;
-
-    for (i = nodes.length; i > 0; i--) {
-      parent = nodes[i - 1];
-      if (parent) {
-        current = nodes[i - 1].setChild(route[i], current); 
-      } else {
-        parent = new Quaternary();
-        parent._setChild(route[i], current);
-        current = parent;
-      }
-    }
-    return new ImmutableQuadTree(current, this._levels, this._options);
-  }
   map(qroute: string, f: (any) => any): ImmutableQuadTree {
     this._partialRouteGuard(qroute, this._levels);
     var route = this._parse(qroute);
-    var path = this._goto(route);
+    var path = this._goto(route, this._root);
 
     if (!path.current) {
       return this;
@@ -64,7 +28,7 @@ class ImmutableQuadTree extends QuadTreeRotue {
 
     return path.current === newnode ?
       this :
-      this._replace(path, newnode);
+      new ImmutableQuadTree(this._replace(path, newnode), this._levels, this._options);
 
   }
   add(qroute: string, data: any[]|any): ImmutableQuadTree {
