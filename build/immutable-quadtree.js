@@ -9,7 +9,7 @@ var ImmutableObjectType = (function () {
         var i, flag = false;
         var newobj = Object.create(obj);
         for (i = 0; i < data.length; i++) {
-            if (newobj[data[i]._id]) {
+            if (!obj[data[i]._id]) {
                 newobj[data[i]._id] = data[i];
                 flag = true;
             }
@@ -82,11 +82,11 @@ var QuadTreeRotue = (function () {
     QuadTreeRotue.prototype._replace = function (path, node) {
         var route = path.route;
         var nodes = path.nodes;
-        var i, parent, current;
-        for (i = nodes.length; i > 0; i--) {
-            parent = nodes[i - 1];
+        var i, parent, current = node;
+        for (i = route.length - 1; i >= 0; i--) {
+            parent = nodes[i];
             if (parent) {
-                current = nodes[i - 1].setChild(route[i], current);
+                current = nodes[i].setChild(route[i], current);
             }
             else {
                 parent = new Quaternary();
@@ -184,7 +184,8 @@ var __extends = this.__extends || function (d, b) {
 };
 var ImmutableQuadTree = (function (_super) {
     __extends(ImmutableQuadTree, _super);
-    function ImmutableQuadTree(root, levels, options) {
+    function ImmutableQuadTree(levels, options, root) {
+        if (options === void 0) { options = {}; }
         _super.call(this);
         options.datatype = options.datatype || ImmutableObjectType;
         this._levels = levels;
@@ -196,56 +197,36 @@ var ImmutableQuadTree = (function (_super) {
         this._partialRouteGuard(qroute, this._levels);
         var route = this._parse(qroute);
         var path = this._goto(route, this._root);
+        //no change
         if (!path.current) {
             return this;
         }
         var newnode = path.current.map(this._dt.map(f));
         return path.current === newnode ?
             this :
-            new ImmutableQuadTree(this._replace(path, newnode), this._levels, this._options);
+            new ImmutableQuadTree(this._levels, this._options, this._replace(path, newnode));
     };
     ImmutableQuadTree.prototype.add = function (qroute, data) {
         this._fullRouteGuard(qroute, this._levels);
+        var leafs, newleafs, newnode;
         var route = this._parse(qroute);
-        var i;
-        var leafs, newleafs;
-        var child, current = this._root, parent;
-        var nodeRoute = [this._root];
-        for (i = 0; i < route.length; i++) {
-            child = current.getChild(route[i]);
-            current = child;
-            nodeRoute.push(current);
-            if (!current) {
-                break;
-            }
-        }
-        if (current) {
-            leafs = current.getData();
+        var path = this._goto(route, this._root);
+        if (path.current) {
+            leafs = path.current.getData();
             newleafs = this._dt.add(leafs, data);
             //no change
             if (leafs === newleafs) {
                 return this;
             }
-            current = current.setData(newleafs);
+            newnode = path.current.setData(newleafs);
         }
         else {
             leafs = new this._dt.cons();
             newleafs = this._dt.add(leafs, data);
-            current = new Quaternary();
-            current._setData(newleafs);
+            newnode = new Quaternary();
+            newnode._setData(newleafs);
         }
-        for (i = route.length - 1; i > 0; i--) {
-            parent = nodeRoute[i - 1];
-            if (parent) {
-                current = nodeRoute[i - 1].setChild(route[i], current);
-            }
-            else {
-                parent = new Quaternary();
-                parent._setChild(route[i], current);
-                current = parent;
-            }
-        }
-        return new ImmutableQuadTree(current, this._levels, this._options);
+        return new ImmutableQuadTree(this._levels, this._options, this._replace(path, newnode));
     };
     return ImmutableQuadTree;
 })(QuadTreeRotue);

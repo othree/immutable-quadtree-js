@@ -5,3 +5,4 @@ immutable-quadtree.js: build/immutable-object-type.js build/quadtree-route.js bu
 
 build/tree.js: src/immutable-object-type.ts src/quadtree-route.ts src/quaternary.ts src/tree.ts
 	tsc src/tree.ts --outDir build
+	

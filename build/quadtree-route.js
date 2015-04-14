@@ -41,11 +41,11 @@ var QuadTreeRotue = (function () {
     QuadTreeRotue.prototype._replace = function (path, node) {
         var route = path.route;
         var nodes = path.nodes;
-        var i, parent, current;
-        for (i = nodes.length; i > 0; i--) {
-            parent = nodes[i - 1];
+        var i, parent, current = node;
+        for (i = route.length - 1; i >= 0; i--) {
+            parent = nodes[i];
             if (parent) {
-                current = nodes[i - 1].setChild(route[i], current);
+                current = nodes[i].setChild(route[i], current);
             }
             else {
                 parent = new Quaternary();
