@@ -28,7 +28,7 @@ class Quaternary {
   _setChild(i: number, data: Quaternary): void {
     this.children[i] = data;
   }
-  setChild(i: number, data: Quaternary): Quaternary {
+  setChild(i: number, data?: Quaternary): Quaternary {
     if (data === this.children[i]) {
       return this;
     }
