@@ -11,3 +11,5 @@ Immutable Quadtree in JS
     a === b; // false
     b === c; // true
     c === d; // false
+
+    var e = d.keep('001');
