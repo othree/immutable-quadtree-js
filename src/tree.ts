@@ -59,4 +59,22 @@ class ImmutableQuadTree extends QuadTreeRotue {
       return this;
     }
   } 
+  keep(qroute): ImmutableQuadTree {
+    this._partialRouteGuard(qroute, this._levels);
+    var route = this._parse(qroute);
+    var path = this._goto(route, this._root);
+    var i, flag = false;
+
+    for (i = 0; i < path.nodes.length - 1; i++) {
+      if (path.nodes[i].children_len > 1) {
+        path.nodes[i] = new Quaternary();
+        flag = true;
+      }
+    }
+    if (flag) {
+      return new ImmutableQuadTree(this._levels, this._options, this._replace(path, path.current));
+    } else {
+      return this;
+    }
+  }
 }
