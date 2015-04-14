@@ -83,5 +83,12 @@ var ImmutableQuadTree = (function (_super) {
             return this;
         }
     };
+    ImmutableQuadTree.prototype.query = function (qroute) {
+        var list = [];
+        this.map(qroute, function (data) {
+            list.push(data);
+        });
+        return list;
+    };
     return ImmutableQuadTree;
 })(QuadTreeRotue);
