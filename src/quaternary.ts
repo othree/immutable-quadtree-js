@@ -1,13 +1,16 @@
 
 class Quaternary {
   children: Quaternary[];
+  children_len: number;
   data: any;
   constructor(base?: Quaternary) {
     var i;
     if (base) {
       this.children = base.children.slice();
+      this.children_len = base.children_len;
     } else {
       this.children = [];
+      this.children_len = 0;
     }
     this.data = null;
   }
@@ -26,6 +29,11 @@ class Quaternary {
     return this.data;
   }
   _setChild(i: number, data: Quaternary): void {
+    if (!this.children[i] && data) {
+      this.children_len++;
+    } else if (this.children[i] && !data) {
+      this.children_len--;
+    }
     this.children[i] = data;
   }
   setChild(i: number, data?: Quaternary): Quaternary {
