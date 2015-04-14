@@ -103,9 +103,11 @@ var Quaternary = (function () {
         var i;
         if (base) {
             this.children = base.children.slice();
+            this.children_len = base.children_len;
         }
         else {
             this.children = [];
+            this.children_len = 0;
         }
         this.data = null;
     }
@@ -124,6 +126,12 @@ var Quaternary = (function () {
         return this.data;
     };
     Quaternary.prototype._setChild = function (i, data) {
+        if (!this.children[i] && data) {
+            this.children_len++;
+        }
+        else if (this.children[i] && !data) {
+            this.children_len--;
+        }
         this.children[i] = data;
     };
     Quaternary.prototype.setChild = function (i, data) {
@@ -234,6 +242,25 @@ var ImmutableQuadTree = (function (_super) {
         var path = this._goto(route, this._root);
         if (path.current && path.current.children.length) {
             return new ImmutableQuadTree(this._levels, this._options, this._replace(path, null));
+        }
+        else {
+            return this;
+        }
+    };
+    ImmutableQuadTree.prototype.keep = function (qroute) {
+        this._partialRouteGuard(qroute, this._levels);
+        var route = this._parse(qroute);
+        var path = this._goto(route, this._root);
+        var i, changed = false;
+        for (i = 0; i < path.nodes.length - 1; i++) {
+            if (path.nodes[i].children_len > 1) {
+                changed = true;
+                break;
+            }
+        }
+        if (changed) {
+            path.nodes = [];
+            return new ImmutableQuadTree(this._levels, this._options, this._replace(path, path.current));
         }
         else {
             return this;

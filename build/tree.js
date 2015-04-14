@@ -64,5 +64,24 @@ var ImmutableQuadTree = (function (_super) {
             return this;
         }
     };
+    ImmutableQuadTree.prototype.keep = function (qroute) {
+        this._partialRouteGuard(qroute, this._levels);
+        var route = this._parse(qroute);
+        var path = this._goto(route, this._root);
+        var i, changed = false;
+        for (i = 0; i < path.nodes.length - 1; i++) {
+            if (path.nodes[i].children_len > 1) {
+                changed = true;
+                break;
+            }
+        }
+        if (changed) {
+            path.nodes = [];
+            return new ImmutableQuadTree(this._levels, this._options, this._replace(path, path.current));
+        }
+        else {
+            return this;
+        }
+    };
     return ImmutableQuadTree;
 })(QuadTreeRotue);

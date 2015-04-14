@@ -3,9 +3,11 @@ var Quaternary = (function () {
         var i;
         if (base) {
             this.children = base.children.slice();
+            this.children_len = base.children_len;
         }
         else {
             this.children = [];
+            this.children_len = 0;
         }
         this.data = null;
     }
@@ -24,6 +26,12 @@ var Quaternary = (function () {
         return this.data;
     };
     Quaternary.prototype._setChild = function (i, data) {
+        if (!this.children[i] && data) {
+            this.children_len++;
+        }
+        else if (this.children[i] && !data) {
+            this.children_len--;
+        }
         this.children[i] = data;
     };
     Quaternary.prototype.setChild = function (i, data) {
