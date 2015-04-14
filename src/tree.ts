@@ -20,7 +20,7 @@ class ImmutableQuadTree extends QuadTreeRotue {
     var route = this._parse(qroute);
     var path = this._goto(route, this._root);
 
-    //no change
+    //no data
     if (!path.current) { return this; }
 
     var newnode = path.current.map(this._dt.map(f));
@@ -28,7 +28,6 @@ class ImmutableQuadTree extends QuadTreeRotue {
     return path.current === newnode ?
       this :
       new ImmutableQuadTree(this._levels, this._options, this._replace(path, newnode));
-
   }
   add(qroute: string, data: any[]|any): ImmutableQuadTree {
     this._fullRouteGuard(qroute, this._levels);
@@ -50,4 +49,14 @@ class ImmutableQuadTree extends QuadTreeRotue {
     }
     return new ImmutableQuadTree(this._levels, this._options, this._replace(path, newnode));
   }
+  clean(qroute): ImmutableQuadTree {
+    this._partialRouteGuard(qroute, this._levels);
+    var route = this._parse(qroute);
+    var path = this._goto(route, this._root);
+    if (path.current && path.current.children.length) {
+      return new ImmutableQuadTree(this._levels, this._options, this._replace(path, null));
+    } else {
+      return this;
+    }
+  } 
 }
