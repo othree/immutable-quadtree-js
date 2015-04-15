@@ -301,6 +301,8 @@ var __extends = this.__extends || function (d, b) {
  * @param options Options
  * @param options.datatype Leaf node data tool
  * @param options.identity Function to get id of leaf data
+ * @property {ImmutableObjectType} ObjectType Native object(map) data type tool
+ * @property {ImmutableArrayType} ArrayType Native array(list) data type tool
  */
 var ImmutableQuadTree = (function (_super) {
     __extends(ImmutableQuadTree, _super);
@@ -319,6 +321,7 @@ var ImmutableQuadTree = (function (_super) {
      * @param {string} qroute Route of map root.
      * @param {function} f Function will execute on every leaf data.
      * @return {ImmutableQuadTree} New tree
+     * @memberof ImmutableQuadTree
      */
     ImmutableQuadTree.prototype.map = function (qroute, f) {
         this._partialRouteGuard(qroute, this._levels);
@@ -339,6 +342,7 @@ var ImmutableQuadTree = (function (_super) {
      * @param {string} qroute Full length route.
      * @param {any} data Data store to leaf node
      * @return {ImmutableQuadTree} New tree if any change. Self if no change.
+     * @memberof ImmutableQuadTree
      */
     ImmutableQuadTree.prototype.add = function (qroute, data) {
         this._fullRouteGuard(qroute, this._levels);
@@ -368,6 +372,7 @@ var ImmutableQuadTree = (function (_super) {
      * @param {string} qroute Full length route.
      * @param {any} data Data store to leaf node
      * @return {ImmutableQuadTree} New tree if any change. Self if no change.
+     * @memberof ImmutableQuadTree
      */
     ImmutableQuadTree.prototype.remove = function (qroute, data) {
         this._fullRouteGuard(qroute, this._levels);
@@ -386,6 +391,13 @@ var ImmutableQuadTree = (function (_super) {
         }
         return this;
     };
+    /**
+     * @method clean
+     * @description Clean all data under route
+     * @param {string} qroute Route to clean.
+     * @return {ImmutableQuadTree} New tree if any change. Self if no change.
+     * @memberof ImmutableQuadTree
+     */
     ImmutableQuadTree.prototype.clean = function (qroute) {
         this._partialRouteGuard(qroute, this._levels);
         var route = this._parse(qroute);
@@ -397,6 +409,13 @@ var ImmutableQuadTree = (function (_super) {
             return this;
         }
     };
+    /**
+     * @method keep
+     * @description Remove all data except given route.
+     * @param {string} qroute Data under the route will keep
+     * @return {ImmutableQuadTree} New tree if any change. Self if no change.
+     * @memberof ImmutableQuadTree
+     */
     ImmutableQuadTree.prototype.keep = function (qroute) {
         this._partialRouteGuard(qroute, this._levels);
         var route = this._parse(qroute);
@@ -430,9 +449,6 @@ var ImmutableQuadTree = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    /**
-     * @property {ImmutableObjectType} ObjectType
-     */
     ImmutableQuadTree.ObjectType = ImmutableObjectType;
     ImmutableQuadTree.ArrayType = ImmutableArrayType;
     return ImmutableQuadTree;
