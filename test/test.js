@@ -6,9 +6,13 @@ var ImmutableQuadTree = require('../');
 
 describe('Immutable QuadTree', function () {
   var a = new ImmutableQuadTree(4);
-  var b = a.add('0000', {_id: 'ABC'});
-  var c = b.add('0000', {_id: 'ABC'});
-  var d = c.add('0010', {_id: 'BBB'});
+
+  var ABC = {_id: 'ABC'};
+  var BBB = {_id: 'BBB'};
+
+  var b = a.add('0000', ABC);
+  var c = b.add('0000', ABC);
+  var d = c.add('0010', BBB);
 
   it('Immutable Equality Check', function () {
     a.should.not.equal(b);
@@ -24,8 +28,23 @@ describe('Immutable QuadTree', function () {
     f.query('002').length.should.equal(0);
     f.query('003').length.should.equal(0);
   });
-  it('Empty Query', function () {
+  it('Keep', function () {
+    var e = d.keep('001');
+    e.query('001').length.should.equal(1);
+    var f = d.keep('000');
+    f.query('000').length.should.equal(1);
+    f.query('001').length.should.equal(0);
+    f.query('002').length.should.equal(0);
+    f.query('003').length.should.equal(0);
+  });
+  it('Empty Route Query', function () {
     var e = d.clean();
     e.query().length.should.equal(0);
+  });
+  it('Query', function () {
+    var list = d.query();
+    list.length.should.equal(2);
+    list[0].should.equal(ABC);
+    list[1].should.equal(BBB);
   });
 });
