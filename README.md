@@ -1,5 +1,10 @@
-# immutable-quadtree-js
+# immutable-quadtree-js 
+
+[![Build Status](https://travis-ci.org/othree/immutable-quadtree-js.svg?branch=master)](https://travis-ci.org/othree/immutable-quadtree-js)
+
 Immutable Quadtree in JS
+
+
 
 ## Example
 
