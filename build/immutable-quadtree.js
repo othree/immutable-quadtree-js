@@ -251,14 +251,18 @@ var QuadTreeRotue = (function () {
 })();
 /**
  * @callback identity
- * @description Grab id from given data.
- * @param data Data to grab id.
+ * @description Grab id from given data. Id is used to make sure data points are unique, no duplication.
+ *     This is only interface defination. Default identity function will grab *id* property of given object.
+ *     If id of data point isn't *id*. You will need to define your own identity function follow this interface.
+ * @param {object} data Data to grab id.
  * @return {string} id
+ * @inner
  */
 /**
  * @class ImmutableObjectType
  * @description Leaf node data type tool for native object
  * @param {identity} identity function to get data id
+ * @inner
  */
 var ImmutableObjectType = (function () {
     function ImmutableObjectType(identity) {

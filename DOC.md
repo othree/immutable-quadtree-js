@@ -1,28 +1,8 @@
 ## Classes
 <dl>
-<dt><a href="#ImmutableObjectType">ImmutableObjectType</a></dt>
-<dd></dd>
 <dt><a href="#ImmutableQuadTree">ImmutableQuadTree</a></dt>
 <dd></dd>
 </dl>
-## Typedefs
-<dl>
-<dt><a href="#identity">identity</a> ⇒ <code>string</code></dt>
-<dd><p>Grab id from given data.</p>
-</dd>
-</dl>
-<a name="ImmutableObjectType"></a>
-## ImmutableObjectType
-**Kind**: global class  
-<a name="new_ImmutableObjectType_new"></a>
-### new ImmutableObjectType(identity)
-Leaf node data type tool for native object
-
-
-| Param | Type | Description |
-| --- | --- | --- |
-| identity | <code>[identity](#identity)</code> | function to get data id |
-
 <a name="ImmutableQuadTree"></a>
 ## ImmutableQuadTree
 **Kind**: global class  
@@ -112,14 +92,28 @@ Remove all data except given route.
 | --- | --- | --- |
 | qroute | <code>string</code> | Data under the route will keep |
 
-<a name="identity"></a>
-## identity ⇒ <code>string</code>
-Grab id from given data.
+<a name="ImmutableObjectType"></a>
+## ~ImmutableObjectType
+**Kind**: inner class  
+<a name="new_ImmutableObjectType_new"></a>
+### new ImmutableObjectType(identity)
+Leaf node data type tool for native object
 
-**Kind**: global typedef  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| identity | <code>[identity](#identity)</code> | function to get data id |
+
+<a name="identity"></a>
+## ~identity ⇒ <code>string</code>
+Grab id from given data. Id is used to make sure data points are unique, no duplication.
+    This is only interface defination. Default identity function will grab *id* property of given object.
+    If id of data point isn't *id*. You will need to define your own identity function follow this interface.
+
+**Kind**: inner typedef  
 **Returns**: <code>string</code> - id  
 
-| Param | Description |
-| --- | --- |
-| data | Data to grab id. |
+| Param | Type | Description |
+| --- | --- | --- |
+| data | <code>object</code> | Data to grab id. |
 
