@@ -127,6 +127,9 @@ var QuadTreeRotue = (function () {
     function QuadTreeRotue() {
     }
     QuadTreeRotue.prototype._fullRouteGuard = function (route, levels) {
+        if (!route) {
+            return;
+        }
         if (typeof route !== 'string'
             || route.length !== levels
             || /[^0-3]/.test(route)) {
@@ -134,6 +137,9 @@ var QuadTreeRotue = (function () {
         }
     };
     QuadTreeRotue.prototype._partialRouteGuard = function (route, levels) {
+        if (!route) {
+            return;
+        }
         if (typeof route !== 'string'
             || route.length > levels
             || /[^0-3]/.test(route)) {
@@ -142,6 +148,9 @@ var QuadTreeRotue = (function () {
     };
     QuadTreeRotue.prototype._parse = function (route) {
         var nr = [], i;
+        if (!route) {
+            return nr;
+        }
         for (i = 0; i < route.length; i++) {
             nr.push(parseInt(route[i]));
         }

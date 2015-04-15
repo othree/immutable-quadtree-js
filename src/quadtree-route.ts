@@ -8,6 +8,7 @@ interface Path {
 
 class QuadTreeRotue {
   _fullRouteGuard(route: string, levels: number) {
+    if (!route) { return; }
     if (typeof route !== 'string'
      || route.length !== levels
      || /[^0-3]/.test(route) ) {
@@ -15,14 +16,16 @@ class QuadTreeRotue {
     }
   }
   _partialRouteGuard(route: string, levels: number) {
+    if (!route) { return; }
     if (typeof route !== 'string'
      || route.length > levels
      || /[^0-3]/.test(route) ) {
       throw(new Error("Route incorrect"))
     }
   }
-  _parse(route: string): number[] {
+  _parse(route?: string): number[] {
     var nr = [], i;
+    if (!route) { return nr; }
     for (i = 0; i < route.length; i++) {
       nr.push(parseInt(route[i]));
     }

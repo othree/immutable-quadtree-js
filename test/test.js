@@ -15,4 +15,17 @@ describe('Immutable QuadTree', function () {
     b.should.equal(c);
     c.should.not.equal(d);
   });
+  it('Clean', function () {
+    var e = d.clean('0');
+    e.query('0').length.should.equal(0);
+    var f = d.clean('001');
+    f.query('000').length.should.equal(1);
+    f.query('001').length.should.equal(0);
+    f.query('002').length.should.equal(0);
+    f.query('003').length.should.equal(0);
+  });
+  it('Empty Query', function () {
+    var e = d.clean();
+    e.query().length.should.equal(0);
+  });
 });
