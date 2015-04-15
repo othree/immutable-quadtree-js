@@ -1,67 +1,3 @@
-var ImmutableObjectType = (function () {
-    function ImmutableObjectType(identity) {
-        this.cons = Object;
-        this.identity = identity || function (obj) { return obj.id; };
-    }
-    ImmutableObjectType.prototype.add = function (obj, data) {
-        if (!Array.isArray(data)) {
-            data = [data];
-        }
-        var i, id, flag = false;
-        var newobj = Object.assign({}, obj);
-        for (i = 0; i < data.length; i++) {
-            id = this.identity(data[i]);
-            if (!obj[id]) {
-                newobj[id] = data[i];
-                flag = true;
-            }
-        }
-        if (flag) {
-            return newobj;
-        }
-        //no change
-        return obj;
-    };
-    ImmutableObjectType.prototype.remove = function (obj, data) {
-        if (!Array.isArray(data)) {
-            data = [data];
-        }
-        var i, id, flag = false;
-        var newobj = Object.assign({}, obj);
-        for (i = 0; i < data.length; i++) {
-            id = this.identity(data[i]);
-            if (obj[id]) {
-                newobj[id] = null;
-                delete newobj[id];
-                flag = true;
-            }
-        }
-        if (flag) {
-            return newobj;
-        }
-        //no change
-        return obj;
-    };
-    ImmutableObjectType.prototype.map = function (f) {
-        return function (obj) {
-            var k, newv, newobj;
-            for (k in obj) {
-                if (obj[k]) {
-                    newv = f(obj[k]);
-                    if (newv && newv !== obj[k]) {
-                        if (!newobj) {
-                            newobj = Object.assign({}, obj);
-                        }
-                        newobj[k] = newv;
-                    }
-                }
-            }
-            return newobj || obj;
-        };
-    };
-    return ImmutableObjectType;
-})();
-;
 var ImmutableArrayType = (function () {
     function ImmutableArrayType(identity) {
         this.cons = Array;
@@ -273,6 +209,70 @@ var QuadTreeRotue = (function () {
     };
     return QuadTreeRotue;
 })();
+var ImmutableObjectType = (function () {
+    function ImmutableObjectType(identity) {
+        this.cons = Object;
+        this.identity = identity || function (obj) { return obj.id; };
+    }
+    ImmutableObjectType.prototype.add = function (obj, data) {
+        if (!Array.isArray(data)) {
+            data = [data];
+        }
+        var i, id, flag = false;
+        var newobj = Object.assign({}, obj);
+        for (i = 0; i < data.length; i++) {
+            id = this.identity(data[i]);
+            if (!obj[id]) {
+                newobj[id] = data[i];
+                flag = true;
+            }
+        }
+        if (flag) {
+            return newobj;
+        }
+        //no change
+        return obj;
+    };
+    ImmutableObjectType.prototype.remove = function (obj, data) {
+        if (!Array.isArray(data)) {
+            data = [data];
+        }
+        var i, id, flag = false;
+        var newobj = Object.assign({}, obj);
+        for (i = 0; i < data.length; i++) {
+            id = this.identity(data[i]);
+            if (obj[id]) {
+                newobj[id] = null;
+                delete newobj[id];
+                flag = true;
+            }
+        }
+        if (flag) {
+            return newobj;
+        }
+        //no change
+        return obj;
+    };
+    ImmutableObjectType.prototype.map = function (f) {
+        return function (obj) {
+            var k, newv, newobj;
+            for (k in obj) {
+                if (obj[k]) {
+                    newv = f(obj[k]);
+                    if (newv && newv !== obj[k]) {
+                        if (!newobj) {
+                            newobj = Object.assign({}, obj);
+                        }
+                        newobj[k] = newv;
+                    }
+                }
+            }
+            return newobj || obj;
+        };
+    };
+    return ImmutableObjectType;
+})();
+;
 /// <reference path="quadtree-route.ts" />
 /// <reference path="quaternary.ts" />
 /// <reference path="immutable-object-type.ts" />
@@ -383,6 +383,13 @@ var ImmutableQuadTree = (function (_super) {
         });
         return list;
     };
+    Object.defineProperty(ImmutableQuadTree.prototype, "list", {
+        get: function () {
+            return this.query();
+        },
+        enumerable: true,
+        configurable: true
+    });
     ImmutableQuadTree.ObjectType = ImmutableObjectType;
     ImmutableQuadTree.ArrayType = ImmutableArrayType;
     return ImmutableQuadTree;

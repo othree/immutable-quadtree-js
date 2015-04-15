@@ -61,6 +61,14 @@ describe('Immutable QuadTree Native Map', function () {
     list[0].should.equal(ABC);
     list[1].should.equal(BBB);
   });
+  it('List', function () {
+    var list1 = d.query();
+    var list2 = d.list;
+    list1.length.should.equal(list2.length);
+    list1.length.should.equal(2);
+    list1[0].should.equal(list2[0]);
+    list1[1].should.equal(list2[1]);
+  });
   it('Map', function () {
     var e = d.map(null, function (elem) {
       return {
