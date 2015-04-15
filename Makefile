@@ -10,7 +10,7 @@ build/immutable-quadtree.js: build/tree.js
 	cat src/resource/header.js.tmpl src/vendor/object-assign.js $? src/resource/footer.js.tmpl > $@
 
 build/tree.js: $(sources)
-	tsc -t ES5 $? --out $@
+	tsc -t ES5 $(sources) --out $@
 
 clean:
 	rm build/*
@@ -20,3 +20,6 @@ coverage: build/immutable-quadtree.js
 
 test: build/immutable-quadtree.js
 	npm test
+
+doc: build/immutable-quadtree.js
+	jsdoc2md build/immutable-quadtree.js > DOC.md

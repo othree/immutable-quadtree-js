@@ -1,4 +1,16 @@
 
+/**
+ * @callback identity
+ * @description Grab id from given data.
+ * @param data Data to grab id.
+ * @return {string} id
+ */
+
+/**
+ * @class ImmutableObjectType
+ * @description Leaf node data type tool for native object
+ * @param {identity} identity function to get data id
+ */
 class ImmutableObjectType {
   cons: any;
   identity: (any) => string;

@@ -249,6 +249,17 @@ var QuadTreeRotue = (function () {
     };
     return QuadTreeRotue;
 })();
+/**
+ * @callback identity
+ * @description Grab id from given data.
+ * @param data Data to grab id.
+ * @return {string} id
+ */
+/**
+ * @class ImmutableObjectType
+ * @description Leaf node data type tool for native object
+ * @param {identity} identity function to get data id
+ */
 var ImmutableObjectType = (function () {
     function ImmutableObjectType(identity) {
         this.cons = Object;
@@ -323,6 +334,14 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
+/**
+ * @class ImmutableQuadTree
+ * @description Basic Immutable Quad Tree class
+ * @param {number} levels Quad tree levels
+ * @param options Options
+ * @param options.datatype Leaf node data tool
+ * @param options.identity Function to get id of leaf data
+ */
 var ImmutableQuadTree = (function (_super) {
     __extends(ImmutableQuadTree, _super);
     function ImmutableQuadTree(levels, options, root) {
@@ -334,6 +353,13 @@ var ImmutableQuadTree = (function (_super) {
         this._dt = new options.datatype(options.identity);
         this._options = options;
     }
+    /**
+     * @method map
+     * @description Map to every leaf data since given route.
+     * @param {string} qroute Route of map root.
+     * @param {function} f Function will execute on every leaf data.
+     * @return {ImmutableQuadTree} New tree
+     */
     ImmutableQuadTree.prototype.map = function (qroute, f) {
         this._partialRouteGuard(qroute, this._levels);
         var route = this._parse(qroute);
@@ -347,6 +373,13 @@ var ImmutableQuadTree = (function (_super) {
             this :
             new ImmutableQuadTree(this._levels, this._options, this._replace(path, newnode));
     };
+    /**
+     * @method add
+     * @description Add data to leaf node
+     * @param {string} qroute Full length route.
+     * @param {any} data Data store to leaf node
+     * @return {ImmutableQuadTree} New tree if any change. Self if no change.
+     */
     ImmutableQuadTree.prototype.add = function (qroute, data) {
         this._fullRouteGuard(qroute, this._levels);
         var leafs, newleafs, newnode;
@@ -369,6 +402,13 @@ var ImmutableQuadTree = (function (_super) {
         }
         return new ImmutableQuadTree(this._levels, this._options, this._replace(path, newnode));
     };
+    /**
+     * @method remove
+     * @description Remove data to leaf node
+     * @param {string} qroute Full length route.
+     * @param {any} data Data store to leaf node
+     * @return {ImmutableQuadTree} New tree if any change. Self if no change.
+     */
     ImmutableQuadTree.prototype.remove = function (qroute, data) {
         this._fullRouteGuard(qroute, this._levels);
         var leafs, newleafs, newnode;
@@ -430,6 +470,9 @@ var ImmutableQuadTree = (function (_super) {
         enumerable: true,
         configurable: true
     });
+    /**
+     * @property {ImmutableObjectType} ObjectType
+     */
     ImmutableQuadTree.ObjectType = ImmutableObjectType;
     ImmutableQuadTree.ArrayType = ImmutableArrayType;
     return ImmutableQuadTree;

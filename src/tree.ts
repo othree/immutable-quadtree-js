@@ -3,11 +3,22 @@
 /// <reference path="immutable-object-type.ts" />
 /// <reference path="immutable-array-type.ts" />
 
+/**
+ * @class ImmutableQuadTree
+ * @description Basic Immutable Quad Tree class
+ * @param {number} levels Quad tree levels
+ * @param options Options
+ * @param options.datatype Leaf node data tool
+ * @param options.identity Function to get id of leaf data
+ */
 class ImmutableQuadTree extends QuadTreeRotue {
   _root: Quaternary;
   _levels: number;
   _options: Object;
   _dt: any;
+  /**
+   * @property {ImmutableObjectType} ObjectType
+   */
   public static ObjectType = ImmutableObjectType;
   public static ArrayType  = ImmutableArrayType;
   constructor(levels: number, options:any = {}, root?: Quaternary) {
@@ -18,6 +29,13 @@ class ImmutableQuadTree extends QuadTreeRotue {
     this._dt = new options.datatype(options.identity);
     this._options = options;
   }
+  /**
+   * @method map
+   * @description Map to every leaf data since given route.
+   * @param {string} qroute Route of map root.
+   * @param {function} f Function will execute on every leaf data.
+   * @return {ImmutableQuadTree} New tree
+   */
   map(qroute: string, f: (any) => any): ImmutableQuadTree {
     this._partialRouteGuard(qroute, this._levels);
     var route = this._parse(qroute);
@@ -32,6 +50,13 @@ class ImmutableQuadTree extends QuadTreeRotue {
       this :
       new ImmutableQuadTree(this._levels, this._options, this._replace(path, newnode));
   }
+  /**
+   * @method add
+   * @description Add data to leaf node
+   * @param {string} qroute Full length route.
+   * @param {any} data Data store to leaf node
+   * @return {ImmutableQuadTree} New tree if any change. Self if no change.
+   */
   add(qroute: string, data: any[]|any): ImmutableQuadTree {
     this._fullRouteGuard(qroute, this._levels);
     var leafs, newleafs, newnode;
@@ -52,6 +77,13 @@ class ImmutableQuadTree extends QuadTreeRotue {
     }
     return new ImmutableQuadTree(this._levels, this._options, this._replace(path, newnode));
   }
+  /**
+   * @method remove
+   * @description Remove data to leaf node
+   * @param {string} qroute Full length route.
+   * @param {any} data Data store to leaf node
+   * @return {ImmutableQuadTree} New tree if any change. Self if no change.
+   */
   remove(qroute: string, data: any[]|any): ImmutableQuadTree {
     this._fullRouteGuard(qroute, this._levels);
     var leafs, newleafs, newnode;
