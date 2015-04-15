@@ -9,7 +9,7 @@ class ImmutableObjectType {
     if (!Array.isArray(data)) { data = [data]; }
 
     var i, id, flag = false;
-    var newobj = Object.create(obj);
+    var newobj = (<any>Object).assign({}, obj);
 
     for (i = 0; i < data.length; i++) {
       id = this.identity(data[i]);
@@ -29,7 +29,7 @@ class ImmutableObjectType {
         newv = f(obj[k]);
         if (newv && newv !== obj[k]) {
           if (!newobj) {
-            newobj = Object.create(obj);
+            newobj = (<any>Object).assign({}, obj);
           }
           newobj[k] = newv;
         }
