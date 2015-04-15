@@ -1,3 +1,4 @@
+
 class ImmutableObjectType {
   cons: any;
   identity: (any) => string;
@@ -20,7 +21,25 @@ class ImmutableObjectType {
     }
     if (flag) { return newobj; }
     //no change
-    else { return obj; }
+    return obj;
+  }
+  remove (obj, data: Array<any>) {
+    if (!Array.isArray(data)) { data = [data]; }
+
+    var i, id, flag = false;
+    var newobj = (<any>Object).assign({}, obj);
+
+    for (i = 0; i < data.length; i++) {
+      id = this.identity(data[i]);
+      if (obj[id]) {
+        newobj[id] = null;
+        delete newobj[id];
+        flag = true;
+      }
+    }
+    if (flag) { return newobj; }
+    //no change
+    return obj;
   }
   map (f: (any) => any): (Object) => Object {
     return function (obj) {

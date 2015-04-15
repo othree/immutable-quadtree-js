@@ -3,6 +3,41 @@
   typeof define === 'function' && define.amd ? define(factory) :
   global.ImmutableQuadTree = factory()
 }(this, function () {
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign#Polyfill
+
+if (!Object.assign) {
+  Object.defineProperty(Object, 'assign', {
+    enumerable: false,
+    configurable: true,
+    writable: true,
+    value: function(target, firstSource) {
+      'use strict';
+      if (target === undefined || target === null) {
+        throw new TypeError('Cannot convert first argument to object');
+      }
+
+      var to = Object(target);
+      for (var i = 1; i < arguments.length; i++) {
+        var nextSource = arguments[i];
+        if (nextSource === undefined || nextSource === null) {
+          continue;
+        }
+        nextSource = Object(nextSource);
+
+        var keysArray = Object.keys(Object(nextSource));
+        for (var nextIndex = 0, len = keysArray.length; nextIndex < len; nextIndex++) {
+          var nextKey = keysArray[nextIndex];
+          var desc = Object.getOwnPropertyDescriptor(nextSource, nextKey);
+          if (desc !== undefined && desc.enumerable) {
+            to[nextKey] = nextSource[nextKey];
+          }
+        }
+      }
+      return to;
+    }
+  });
+}
+
 var ImmutableObjectType = (function () {
     function ImmutableObjectType(identity) {
         this.cons = Object;
@@ -13,7 +48,7 @@ var ImmutableObjectType = (function () {
             data = [data];
         }
         var i, id, flag = false;
-        var newobj = Object.create(obj);
+        var newobj = Object.assign({}, obj);
         for (i = 0; i < data.length; i++) {
             id = this.identity(data[i]);
             if (!obj[id]) {
@@ -24,9 +59,28 @@ var ImmutableObjectType = (function () {
         if (flag) {
             return newobj;
         }
-        else {
-            return obj;
+        //no change
+        return obj;
+    };
+    ImmutableObjectType.prototype.remove = function (obj, data) {
+        if (!Array.isArray(data)) {
+            data = [data];
         }
+        var i, id, flag = false;
+        var newobj = Object.assign({}, obj);
+        for (i = 0; i < data.length; i++) {
+            id = this.identity(data[i]);
+            if (obj[id]) {
+                newobj[id] = null;
+                delete newobj[id];
+                flag = true;
+            }
+        }
+        if (flag) {
+            return newobj;
+        }
+        //no change
+        return obj;
     };
     ImmutableObjectType.prototype.map = function (f) {
         return function (obj) {
@@ -35,7 +89,7 @@ var ImmutableObjectType = (function () {
                 newv = f(obj[k]);
                 if (newv && newv !== obj[k]) {
                     if (!newobj) {
-                        newobj = Object.create(obj);
+                        newobj = Object.assign({}, obj);
                     }
                     newobj[k] = newv;
                 }
@@ -251,6 +305,23 @@ var ImmutableQuadTree = (function (_super) {
             newnode._setData(newleafs);
         }
         return new ImmutableQuadTree(this._levels, this._options, this._replace(path, newnode));
+    };
+    ImmutableQuadTree.prototype.remove = function (qroute, data) {
+        this._fullRouteGuard(qroute, this._levels);
+        var leafs, newleafs, newnode;
+        var route = this._parse(qroute);
+        var path = this._goto(route, this._root);
+        if (path.current) {
+            leafs = path.current.getData();
+            newleafs = this._dt.remove(leafs, data);
+            //no change
+            if (leafs === newleafs) {
+                return this;
+            }
+            newnode = path.current.setData(newleafs);
+            return new ImmutableQuadTree(this._levels, this._options, this._replace(path, newnode));
+        }
+        return this;
     };
     ImmutableQuadTree.prototype.clean = function (qroute) {
         this._partialRouteGuard(qroute, this._levels);

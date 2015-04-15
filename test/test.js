@@ -19,6 +19,20 @@ describe('Immutable QuadTree', function () {
     b.should.equal(c);
     c.should.not.equal(d);
   });
+  it('Remove', function () {
+    var e = d.remove('0000', ABC);
+    e.should.not.equal(d);
+    e.query('0').length.should.equal(1);
+    var f = d.remove('0010', BBB);
+    f.query('000').length.should.equal(1);
+    f.query('001').length.should.equal(0);
+    var g = f.remove('0000', BBB);
+    g.query('000').length.should.equal(1);
+    g.query('001').length.should.equal(0);
+    var h = g.remove('0000', ABC);
+    h.query('000').length.should.equal(0);
+    h.query('001').length.should.equal(0);
+  });
   it('Clean', function () {
     var e = d.clean('0');
     e.query('0').length.should.equal(0);
