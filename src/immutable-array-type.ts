@@ -28,13 +28,13 @@ class ImmutableArrayType {
 
     for (i = 0; i < data.length; i++) {
       id = this.identity(data[i]);
-      newobj = newobj.filer(function (elem) {
+      newobj = newobj.filter(function (elem) {
         var jd = self.identity(elem);
         return id !== jd;
       });
     }
 
-    if (newobj.length === obj.length) { return newobj; }
+    if (newobj.length !== obj.length) { return newobj; }
     //no change
     return obj;
   }

@@ -99,6 +99,14 @@ describe('Immutable QuadTree Native Set', function () {
     b.should.not.equal(c);
     c.should.not.equal(d);
   });
+  it('Remove', function () {
+    var e = d.remove('0000', ABC);
+    e.should.not.equal(d);
+    e.query('0').length.should.equal(1);
+    var f = d.remove('0010', BBB);
+    f.query('000').length.should.equal(2);
+    f.query('001').length.should.equal(0);
+  });
   it('Query', function () {
     var list = d.query();
     list.length.should.equal(3);
