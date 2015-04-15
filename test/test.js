@@ -4,7 +4,7 @@ var should = require('should');
 
 var ImmutableQuadTree = require('../');
 
-describe('Immutable QuadTree', function () {
+describe('Immutable QuadTree Native Map', function () {
   var a = new ImmutableQuadTree(4);
 
   var ABC = {id: 'ABC'};
@@ -79,5 +79,33 @@ describe('Immutable QuadTree', function () {
     list.length.should.equal(2);
     list.should.containDeep([CBA]);
     list.should.containDeep([AAA]);
+  });
+});
+
+describe('Immutable QuadTree Native Set', function () {
+  var a = new ImmutableQuadTree(4, {
+    datatype: ImmutableQuadTree.ArrayType
+  });
+
+  var ABC = {id: 'ABC'};
+  var BBB = {id: 'BBB'};
+
+  var b = a.add('0000', ABC);
+  var c = b.add('0000', ABC);
+  var d = c.add('0010', BBB);
+
+  it('Immutable Equality Check', function () {
+    a.should.not.equal(b);
+    b.should.not.equal(c);
+    c.should.not.equal(d);
+  });
+  it('Query', function () {
+    var list = d.query();
+    list.length.should.equal(3);
+    list[0].should.equal(ABC);
+    list[1].should.equal(ABC);
+    list[2].should.equal(BBB);
+
+    d.query('000').length.should.equal(2);
   });
 });

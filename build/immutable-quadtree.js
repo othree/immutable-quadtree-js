@@ -86,18 +86,80 @@ var ImmutableObjectType = (function () {
         return function (obj) {
             var k, newv, newobj;
             for (k in obj) {
-                newv = f(obj[k]);
-                if (newv && newv !== obj[k]) {
-                    if (!newobj) {
-                        newobj = Object.assign({}, obj);
+                if (obj[k]) {
+                    newv = f(obj[k]);
+                    if (newv && newv !== obj[k]) {
+                        if (!newobj) {
+                            newobj = Object.assign({}, obj);
+                        }
+                        newobj[k] = newv;
                     }
-                    newobj[k] = newv;
                 }
             }
             return newobj || obj;
         };
     };
     return ImmutableObjectType;
+})();
+;
+var ImmutableArrayType = (function () {
+    function ImmutableArrayType(identity) {
+        this.cons = Array;
+        this.identity = identity || function (obj) { return obj; };
+    }
+    ImmutableArrayType.prototype.add = function (obj, data) {
+        if (!Array.isArray(data)) {
+            data = [data];
+        }
+        var i, id, flag = false;
+        var newobj = obj.slice();
+        if (data.length) {
+            newobj = newobj.concat(data);
+            flag = true;
+        }
+        if (flag) {
+            return newobj;
+        }
+        //no change
+        return obj;
+    };
+    ImmutableArrayType.prototype.remove = function (obj, data) {
+        if (!Array.isArray(data)) {
+            data = [data];
+        }
+        var i, j, id, self = this;
+        var newobj = obj.slice();
+        for (i = 0; i < data.length; i++) {
+            id = this.identity(data[i]);
+            newobj = newobj.filer(function (elem) {
+                var jd = self.identity(elem);
+                return id !== jd;
+            });
+        }
+        if (newobj.length === obj.length) {
+            return newobj;
+        }
+        //no change
+        return obj;
+    };
+    ImmutableArrayType.prototype.map = function (f) {
+        return function (obj) {
+            var k, newv, newobj;
+            for (k in obj) {
+                if (obj[k]) {
+                    newv = f(obj[k]);
+                    if (newv && newv !== obj[k]) {
+                        if (!newobj) {
+                            newobj = obj.slice();
+                        }
+                        newobj[k] = newv;
+                    }
+                }
+            }
+            return newobj || obj;
+        };
+    };
+    return ImmutableArrayType;
 })();
 ;
 var Quaternary = (function () {
@@ -254,6 +316,7 @@ var QuadTreeRotue = (function () {
 /// <reference path="quadtree-route.ts" />
 /// <reference path="quaternary.ts" />
 /// <reference path="immutable-object-type.ts" />
+/// <reference path="immutable-array-type.ts" />
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -361,6 +424,7 @@ var ImmutableQuadTree = (function (_super) {
         return list;
     };
     ImmutableQuadTree.ObjectType = ImmutableObjectType;
+    ImmutableQuadTree.ArrayType = ImmutableArrayType;
     return ImmutableQuadTree;
 })(QuadTreeRotue);
 

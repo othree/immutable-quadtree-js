@@ -1,23 +1,20 @@
 
-class ImmutableObjectType {
+class ImmutableArrayType {
   cons: any;
   identity: (any) => string;
   constructor (identity?: (any) => string) {
-    this.cons = Object; 
-    this.identity = identity || function (obj) { return obj.id; }
+    this.cons = Array; 
+    this.identity = identity || function (obj) { return obj; }
   }
   add (obj, data: Array<any>) {
     if (!Array.isArray(data)) { data = [data]; }
 
     var i, id, flag = false;
-    var newobj = (<any>Object).assign({}, obj);
+    var newobj = obj.slice();
 
-    for (i = 0; i < data.length; i++) {
-      id = this.identity(data[i]);
-      if (!obj[id]) {
-        newobj[id] = data[i];
-        flag = true;
-      }
+    if (data.length) {
+      newobj = newobj.concat(data)
+      flag = true;
     }
     if (flag) { return newobj; }
     //no change
@@ -26,18 +23,18 @@ class ImmutableObjectType {
   remove (obj, data: Array<any>) {
     if (!Array.isArray(data)) { data = [data]; }
 
-    var i, id, flag = false;
-    var newobj = (<any>Object).assign({}, obj);
+    var i, j, id, self = this;
+    var newobj = obj.slice();
 
     for (i = 0; i < data.length; i++) {
       id = this.identity(data[i]);
-      if (obj[id]) {
-        newobj[id] = null;
-        delete newobj[id];
-        flag = true;
-      }
+      newobj = newobj.filer(function (elem) {
+        var jd = self.identity(elem);
+        return id !== jd;
+      });
     }
-    if (flag) { return newobj; }
+
+    if (newobj.length === obj.length) { return newobj; }
     //no change
     return obj;
   }
@@ -49,7 +46,7 @@ class ImmutableObjectType {
           newv = f(obj[k]);
           if (newv && newv !== obj[k]) {
             if (!newobj) {
-              newobj = (<any>Object).assign({}, obj);
+              newobj = obj.slice();
             }
             newobj[k] = newv;
           }
