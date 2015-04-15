@@ -61,6 +61,15 @@ describe('Immutable QuadTree Native Map', function () {
     list[0].should.equal(ABC);
     list[1].should.equal(BBB);
   });
+  it('Map', function () {
+    var e = d.map(null, function (elem) {
+      return {
+        id: elem.id,
+        value: 1
+      };
+    });
+    e.should.not.equal(d);
+  });
 
   var aa = new ImmutableQuadTree(4, {
     datatype: ImmutableQuadTree.ObjectType,
