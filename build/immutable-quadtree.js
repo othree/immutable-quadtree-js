@@ -4,18 +4,20 @@
   global.ImmutableQuadTree = factory()
 }(this, function () {
 var ImmutableObjectType = (function () {
-    function ImmutableObjectType() {
+    function ImmutableObjectType(identity) {
         this.cons = Object;
+        this.identity = identity || function (obj) { return obj.id; };
     }
     ImmutableObjectType.prototype.add = function (obj, data) {
         if (!Array.isArray(data)) {
             data = [data];
         }
-        var i, flag = false;
+        var i, id, flag = false;
         var newobj = Object.create(obj);
         for (i = 0; i < data.length; i++) {
-            if (!obj[data[i]._id]) {
-                newobj[data[i]._id] = data[i];
+            id = this.identity(data[i]);
+            if (!obj[id]) {
+                newobj[id] = data[i];
                 flag = true;
             }
         }
@@ -212,7 +214,7 @@ var ImmutableQuadTree = (function (_super) {
         options.datatype = options.datatype || ImmutableObjectType;
         this._levels = levels;
         this._root = root || new Quaternary();
-        this._dt = new options.datatype();
+        this._dt = new options.datatype(options.identity);
         this._options = options;
     }
     ImmutableQuadTree.prototype.map = function (qroute, f) {
@@ -287,6 +289,7 @@ var ImmutableQuadTree = (function (_super) {
         });
         return list;
     };
+    ImmutableQuadTree.ObjectType = ImmutableObjectType;
     return ImmutableQuadTree;
 })(QuadTreeRotue);
 

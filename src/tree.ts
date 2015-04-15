@@ -7,12 +7,13 @@ class ImmutableQuadTree extends QuadTreeRotue {
   _levels: number;
   _options: Object;
   _dt: any;
+  public static ObjectType = ImmutableObjectType;
   constructor(levels: number, options:any = {}, root?: Quaternary) {
     super();
     options.datatype = options.datatype || ImmutableObjectType;
     this._levels = levels;
     this._root = root || new Quaternary();
-    this._dt = new options.datatype();
+    this._dt = new options.datatype(options.identity);
     this._options = options;
   }
   map(qroute: string, f: (any) => any): ImmutableQuadTree {

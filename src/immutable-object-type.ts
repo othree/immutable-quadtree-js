@@ -1,17 +1,20 @@
 class ImmutableObjectType {
   cons: any;
-  constructor () {
+  identity: (any) => string;
+  constructor (identity?: (any) => string) {
     this.cons = Object; 
+    this.identity = identity || function (obj) { return obj.id; }
   }
   add (obj, data: Array<any>) {
     if (!Array.isArray(data)) { data = [data]; }
 
-    var i, flag = false;
+    var i, id, flag = false;
     var newobj = Object.create(obj);
 
     for (i = 0; i < data.length; i++) {
-      if (!obj[data[i]._id]) {
-        newobj[data[i]._id] = data[i];
+      id = this.identity(data[i]);
+      if (!obj[id]) {
+        newobj[id] = data[i];
         flag = true;
       }
     }
@@ -19,7 +22,7 @@ class ImmutableObjectType {
     //no change
     else { return obj; }
   }
-  map (f): (Object) => Object {
+  map (f: (any) => any): (Object) => Object {
     return function (obj) {
       var k, newv, newobj;
       for (k in obj) {
