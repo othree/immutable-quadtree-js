@@ -18,9 +18,7 @@ class Quaternary {
     this.data = data;
   }
   setData(data: any): Quaternary {
-    if (data === this.data) {
-      return this;
-    }
+    // if (data === this.data) { return this; }
     var nq = new Quaternary(this);
     nq._setData(data);
     return nq;
@@ -37,9 +35,7 @@ class Quaternary {
     this.children[i] = data;
   }
   setChild(i: number, data?: Quaternary): Quaternary {
-    if (data === this.children[i]) {
-      return this;
-    }
+    // if (data === this.children[i]) { return this; }
     var nq = new Quaternary(this);
     nq._setChild(i, data);
     return nq;
@@ -47,9 +43,9 @@ class Quaternary {
   getChild(i: number): Quaternary {
     return this.children[i];
   }
-  hasChild(i: number): boolean {
-    return this.children[i] ? true : false;
-  }
+  // hasChild(i: number): boolean {
+    // return this.children[i] ? true : false;
+  // }
   map(f: (any) => any): Quaternary {
     var i, nq, flag = false;
     var leaf = this.data, newleaf;

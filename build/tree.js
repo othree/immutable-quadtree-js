@@ -73,9 +73,7 @@ var Quaternary = (function () {
         this.data = data;
     };
     Quaternary.prototype.setData = function (data) {
-        if (data === this.data) {
-            return this;
-        }
+        // if (data === this.data) { return this; }
         var nq = new Quaternary(this);
         nq._setData(data);
         return nq;
@@ -93,9 +91,7 @@ var Quaternary = (function () {
         this.children[i] = data;
     };
     Quaternary.prototype.setChild = function (i, data) {
-        if (data === this.children[i]) {
-            return this;
-        }
+        // if (data === this.children[i]) { return this; }
         var nq = new Quaternary(this);
         nq._setChild(i, data);
         return nq;
@@ -103,9 +99,9 @@ var Quaternary = (function () {
     Quaternary.prototype.getChild = function (i) {
         return this.children[i];
     };
-    Quaternary.prototype.hasChild = function (i) {
-        return this.children[i] ? true : false;
-    };
+    // hasChild(i: number): boolean {
+    // return this.children[i] ? true : false;
+    // }
     Quaternary.prototype.map = function (f) {
         var i, nq, flag = false;
         var leaf = this.data, newleaf;
