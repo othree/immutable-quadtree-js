@@ -8,7 +8,6 @@ interface Path {
 
 class QuadTreeRotue {
   _fullRouteGuard(route: string, levels: number) {
-    if (!route) { return; }
     if (typeof route !== 'string'
      || route.length !== levels
      || /[^0-3]/.test(route) ) {
