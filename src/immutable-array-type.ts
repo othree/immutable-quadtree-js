@@ -7,18 +7,16 @@ class ImmutableArrayType {
     this.identity = identity || function (obj) { return obj; }
   }
   add (obj, data: Array<any>) {
+    if (!data) { return obj; }
     if (!Array.isArray(data)) { data = [data]; }
 
-    var i, id, flag = false;
+    var i, id;
     var newobj = obj.slice();
 
     if (data.length) {
       newobj = newobj.concat(data)
-      flag = true;
     }
-    if (flag) { return newobj; }
-    //no change
-    return obj;
+    return newobj;
   }
   remove (obj, data: Array<any>) {
     if (!Array.isArray(data)) { data = [data]; }
