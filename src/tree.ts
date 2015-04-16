@@ -4,6 +4,11 @@
 /// <reference path="immutable-array-type.ts" />
 
 /**
+ * A string only contains `0`, `1`, `2`, `3`
+ * @typedef {string} route
+ */
+
+/**
  * @class ImmutableQuadTree
  * @description Basic Immutable Quad Tree class
  * @param {number} levels Quad tree levels
@@ -12,6 +17,7 @@
  * @param options.identity Function to get id of leaf data
  * @property {ImmutableObjectType} ObjectType Native object(map) data type tool
  * @property {ImmutableArrayType} ArrayType Native array(list) data type tool
+ * @template T
  */
 class ImmutableQuadTree extends QuadTreeRotue {
   _root: Quaternary;
@@ -32,7 +38,7 @@ class ImmutableQuadTree extends QuadTreeRotue {
    * @method map
    * @description Map to every leaf data since given route.
    * @param {string} qroute Route of map root.
-   * @param {function} f Function will execute on every leaf data.
+   * @param {mapfunc} f Function will execute on every leaf data.
    * @return {ImmutableQuadTree} New tree
    * @memberof ImmutableQuadTree
    */
@@ -53,8 +59,8 @@ class ImmutableQuadTree extends QuadTreeRotue {
   /**
    * @method add
    * @description Add data to leaf node
-   * @param {string} qroute Full length route.
-   * @param {any} data Data store to leaf node
+   * @param {route} qroute Full length route.
+   * @param {T} data Data store to leaf node
    * @return {ImmutableQuadTree} New tree if any change. Self if no change.
    * @memberof ImmutableQuadTree
    */
@@ -81,8 +87,8 @@ class ImmutableQuadTree extends QuadTreeRotue {
   /**
    * @method remove
    * @description Remove data to leaf node
-   * @param {string} qroute Full length route.
-   * @param {any} data Data store to leaf node
+   * @param {route} qroute Full length route.
+   * @param {T} data Data store to leaf node
    * @return {ImmutableQuadTree} New tree if any change. Self if no change.
    * @memberof ImmutableQuadTree
    */
@@ -105,7 +111,7 @@ class ImmutableQuadTree extends QuadTreeRotue {
   /**
    * @method clean
    * @description Clean all data under route
-   * @param {string} qroute Route to clean.
+   * @param {?route} qroute Route to clean.
    * @return {ImmutableQuadTree} New tree if any change. Self if no change.
    * @memberof ImmutableQuadTree
    */
@@ -122,7 +128,7 @@ class ImmutableQuadTree extends QuadTreeRotue {
   /**
    * @method keep
    * @description Remove all data except given route.
-   * @param {string} qroute Data under the route will keep
+   * @param {?route} qroute Data under the route will keep
    * @return {ImmutableQuadTree} New tree if any change. Self if no change.
    * @memberof ImmutableQuadTree
    */
@@ -145,6 +151,13 @@ class ImmutableQuadTree extends QuadTreeRotue {
       return this;
     }
   }
+  /**
+   * @method query
+   * @description Query all data under qroute
+   * @param {?route} qroute Data under the route will return
+   * @return {Array.<T>} Array of query data on leaf nodes
+   * @memberof ImmutableQuadTree
+   */
   query(qroute?: string): any[] {
     var list = [];
     this.map(qroute, function (data) {
@@ -152,6 +165,12 @@ class ImmutableQuadTree extends QuadTreeRotue {
     })
     return list;
   }
+  /**
+   * @property query
+   * @description Getter to query all data under root
+   * @return {Array.<T>} Array of all data on leaf nodes
+   * @memberof ImmutableQuadTree
+   */
   get list() {
     return this.query();
   }

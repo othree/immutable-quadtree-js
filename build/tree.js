@@ -216,12 +216,20 @@ var QuadTreeRotue = (function () {
  *     If id of data point isn't *id*. You will need to define your own identity function follow this interface.
  * @param {object} data Data to grab id.
  * @return {string} id
- * @inner
+ */
+/**
+ * @callback mapfunc
+ * @description Mapping function
+ * @param {T} data Data received
+ * @return {?T} If return, then map will create a new data store.
+ *     If you don't make any change, return nothing.
+ * @template T
  */
 /**
  * @class ImmutableObjectType
- * @description Leaf node data type tool for native object
- * @param {identity} identity function to get data id
+ * @description Leaf node data type tool for native object. Behaves like immutable map
+ * @param {identity} [identity] function to get data id
+ * @template T
  * @inner
  */
 var ImmutableObjectType = (function () {
@@ -229,6 +237,14 @@ var ImmutableObjectType = (function () {
         this.cons = Object;
         this.identity = identity || function (obj) { return obj.id; };
     }
+    /**
+     * @method add
+     * @description Add data to the object
+     * @param {Object} obj The data store native object
+     * @param {T} data Data to store to the object
+     * @return {Object} Return new object if any change, original object if no change
+     * @memberof ImmutableObjectType
+     */
     ImmutableObjectType.prototype.add = function (obj, data) {
         if (!Array.isArray(data)) {
             data = [data];
@@ -248,6 +264,14 @@ var ImmutableObjectType = (function () {
         //no change
         return obj;
     };
+    /**
+     * @method remove
+     * @description Remove data from the object
+     * @param {Object} obj The data store native object
+     * @param {T} data Data to remove from the object
+     * @return {Object} Return new object if any change, original object if no change
+     * @memberof ImmutableObjectType
+     */
     ImmutableObjectType.prototype.remove = function (obj, data) {
         if (!Array.isArray(data)) {
             data = [data];
@@ -268,6 +292,13 @@ var ImmutableObjectType = (function () {
         //no change
         return obj;
     };
+    /**
+     * @method map
+     * @description Map f function on all data, behaves like immutable.
+     * @param {mapfunc} f Mapping function
+     * @return {Object} Return new object if any change, original object if no change
+     * @memberof ImmutableObjectType
+     */
     ImmutableObjectType.prototype.map = function (f) {
         return function (obj) {
             var k, newv, newobj;
@@ -299,6 +330,10 @@ var __extends = this.__extends || function (d, b) {
     d.prototype = new __();
 };
 /**
+ * A string only contains `0`, `1`, `2`, `3`
+ * @typedef {string} route
+ */
+/**
  * @class ImmutableQuadTree
  * @description Basic Immutable Quad Tree class
  * @param {number} levels Quad tree levels
@@ -307,6 +342,7 @@ var __extends = this.__extends || function (d, b) {
  * @param options.identity Function to get id of leaf data
  * @property {ImmutableObjectType} ObjectType Native object(map) data type tool
  * @property {ImmutableArrayType} ArrayType Native array(list) data type tool
+ * @template T
  */
 var ImmutableQuadTree = (function (_super) {
     __extends(ImmutableQuadTree, _super);
@@ -323,7 +359,7 @@ var ImmutableQuadTree = (function (_super) {
      * @method map
      * @description Map to every leaf data since given route.
      * @param {string} qroute Route of map root.
-     * @param {function} f Function will execute on every leaf data.
+     * @param {mapfunc} f Function will execute on every leaf data.
      * @return {ImmutableQuadTree} New tree
      * @memberof ImmutableQuadTree
      */
@@ -343,8 +379,8 @@ var ImmutableQuadTree = (function (_super) {
     /**
      * @method add
      * @description Add data to leaf node
-     * @param {string} qroute Full length route.
-     * @param {any} data Data store to leaf node
+     * @param {route} qroute Full length route.
+     * @param {T} data Data store to leaf node
      * @return {ImmutableQuadTree} New tree if any change. Self if no change.
      * @memberof ImmutableQuadTree
      */
@@ -373,8 +409,8 @@ var ImmutableQuadTree = (function (_super) {
     /**
      * @method remove
      * @description Remove data to leaf node
-     * @param {string} qroute Full length route.
-     * @param {any} data Data store to leaf node
+     * @param {route} qroute Full length route.
+     * @param {T} data Data store to leaf node
      * @return {ImmutableQuadTree} New tree if any change. Self if no change.
      * @memberof ImmutableQuadTree
      */
@@ -398,7 +434,7 @@ var ImmutableQuadTree = (function (_super) {
     /**
      * @method clean
      * @description Clean all data under route
-     * @param {string} qroute Route to clean.
+     * @param {?route} qroute Route to clean.
      * @return {ImmutableQuadTree} New tree if any change. Self if no change.
      * @memberof ImmutableQuadTree
      */
@@ -416,7 +452,7 @@ var ImmutableQuadTree = (function (_super) {
     /**
      * @method keep
      * @description Remove all data except given route.
-     * @param {string} qroute Data under the route will keep
+     * @param {?route} qroute Data under the route will keep
      * @return {ImmutableQuadTree} New tree if any change. Self if no change.
      * @memberof ImmutableQuadTree
      */
@@ -439,6 +475,13 @@ var ImmutableQuadTree = (function (_super) {
             return this;
         }
     };
+    /**
+     * @method query
+     * @description Query all data under qroute
+     * @param {?route} qroute Data under the route will return
+     * @return {Array.<T>} Array of query data on leaf nodes
+     * @memberof ImmutableQuadTree
+     */
     ImmutableQuadTree.prototype.query = function (qroute) {
         var list = [];
         this.map(qroute, function (data) {
@@ -447,6 +490,12 @@ var ImmutableQuadTree = (function (_super) {
         return list;
     };
     Object.defineProperty(ImmutableQuadTree.prototype, "list", {
+        /**
+         * @property query
+         * @description Getter to query all data under root
+         * @return {Array.<T>} Array of all data on leaf nodes
+         * @memberof ImmutableQuadTree
+         */
         get: function () {
             return this.query();
         },

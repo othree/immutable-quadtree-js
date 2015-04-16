@@ -6,13 +6,23 @@
  *     If id of data point isn't *id*. You will need to define your own identity function follow this interface.
  * @param {object} data Data to grab id.
  * @return {string} id
- * @inner
  */
 
 /**
+ * @callback mapfunc
+ * @description Mapping function
+ * @param {T} data Data received
+ * @return {?T} If return, then map will create a new data store.
+ *     If you don't make any change, return nothing.
+ * @template T
+ */
+
+
+/**
  * @class ImmutableObjectType
- * @description Leaf node data type tool for native object
- * @param {identity} identity function to get data id
+ * @description Leaf node data type tool for native object. Behaves like immutable map
+ * @param {identity} [identity] function to get data id
+ * @template T
  * @inner
  */
 class ImmutableObjectType {
@@ -22,6 +32,14 @@ class ImmutableObjectType {
     this.cons = Object; 
     this.identity = identity || function (obj) { return obj.id; }
   }
+  /**
+   * @method add
+   * @description Add data to the object
+   * @param {Object} obj The data store native object
+   * @param {T} data Data to store to the object
+   * @return {Object} Return new object if any change, original object if no change
+   * @memberof ImmutableObjectType
+   */
   add (obj, data: Array<any>) {
     if (!Array.isArray(data)) { data = [data]; }
 
@@ -39,6 +57,14 @@ class ImmutableObjectType {
     //no change
     return obj;
   }
+  /**
+   * @method remove
+   * @description Remove data from the object
+   * @param {Object} obj The data store native object
+   * @param {T} data Data to remove from the object
+   * @return {Object} Return new object if any change, original object if no change
+   * @memberof ImmutableObjectType
+   */
   remove (obj, data: Array<any>) {
     if (!Array.isArray(data)) { data = [data]; }
 
@@ -57,6 +83,13 @@ class ImmutableObjectType {
     //no change
     return obj;
   }
+  /**
+   * @method map
+   * @description Map f function on all data, behaves like immutable.
+   * @param {mapfunc} f Mapping function
+   * @return {Object} Return new object if any change, original object if no change
+   * @memberof ImmutableObjectType
+   */
   map (f: (any) => any): (Object) => Object {
     return function (obj) {
       var k, newv, newobj;
