@@ -32,6 +32,8 @@ describe('Immutable QuadTree Native Map', function () {
     var h = g.remove('0000', ABC);
     h.query('000').length.should.equal(0);
     h.query('001').length.should.equal(0);
+    var i = h.remove('0000', ABC);
+    i.should.equal(h);
   });
   it('Clean', function () {
     var e = d.clean('0');
@@ -41,6 +43,8 @@ describe('Immutable QuadTree Native Map', function () {
     f.query('001').length.should.equal(0);
     f.query('002').length.should.equal(0);
     f.query('003').length.should.equal(0);
+    var g = f.clean('001');
+    g.should.equal(f);
   });
   it('Keep', function () {
     var e = d.keep('001');
@@ -50,6 +54,8 @@ describe('Immutable QuadTree Native Map', function () {
     f.query('001').length.should.equal(0);
     f.query('002').length.should.equal(0);
     f.query('003').length.should.equal(0);
+    var g = f.keep('000');
+    g.should.equal(f);
   });
   it('Empty Route Query', function () {
     var e = d.clean();
@@ -77,6 +83,9 @@ describe('Immutable QuadTree Native Map', function () {
       };
     });
     e.should.not.equal(d);
+    var g = d.map(null, function (elem) {
+    });
+    g.should.equal(d);
   });
   it('Reduce', function () {
     d.reduce('', function (prev, curr) {
@@ -125,6 +134,11 @@ describe('Immutable QuadTree Native Set', function () {
     b.should.not.equal(c);
     c.should.not.equal(d);
   });
+  it('Add', function () {
+    var e = d.add('0000', ABC);
+    e.should.not.equal(d);
+    e.query('0').length.should.equal(4);
+  });
   it('Remove', function () {
     var e = d.remove('0000', ABC);
     e.should.not.equal(d);
@@ -132,6 +146,12 @@ describe('Immutable QuadTree Native Set', function () {
     var f = d.remove('0010', BBB);
     f.query('000').length.should.equal(2);
     f.query('001').length.should.equal(0);
+    var g = f.remove('0010', BBB);
+    g.query('000').length.should.equal(2);
+    g.query('001').length.should.equal(0);
+    var h = f.remove('0010');
+    h.query('000').length.should.equal(2);
+    h.query('001').length.should.equal(0);
   });
   it('Query', function () {
     var list = d.query();
