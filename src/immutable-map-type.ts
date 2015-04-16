@@ -14,7 +14,7 @@ class ImmutableMapType {
   constructor (identity?: (any) => string) {
     if (!Immutable.Map) { throw('No Immutable Available.'); }
     this.cons = Immutable.Map; 
-    this.identity = identity || function (obj) { return obj.id; }
+    this.identity = identity || function (obj) { return obj.id; };
   }
   /**
    * @method add
@@ -25,12 +25,15 @@ class ImmutableMapType {
    * @memberof ImmutableMapType
    */
   add (obj, data: any[]) {
+    if (!data) { return obj; }
     if (!Array.isArray(data)) { data = [data]; }
+
+    var self = this;
 
     return obj.withMutations(function (map) {
       var i, id;
       for (i = 0; i < data.length; i++) {
-        id = this.identity(data[i]);
+        id = self.identity(data[i]);
         if (!map.has(id)) {
           map = map.set(id, data[i]);
         }
@@ -47,12 +50,15 @@ class ImmutableMapType {
    * @memberof ImmutableMapType
    */
   remove (obj, data: Array<any>) {
+    if (!data) { return obj; }
     if (!Array.isArray(data)) { data = [data]; }
+
+    var self = this;
 
     return obj.withMutations(function (map) {
       var i, id;
       for (i = 0; i < data.length; i++) {
-        id = this.identity(data[i]);
+        id = self.identity(data[i]);
         map.remove(id, data[i]);
       }
       return map;

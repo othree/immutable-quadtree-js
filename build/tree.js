@@ -244,6 +244,9 @@ var ImmutableObjectType = (function () {
      * @memberof ImmutableObjectType
      */
     ImmutableObjectType.prototype.add = function (obj, data) {
+        if (!data) {
+            return obj;
+        }
         if (!Array.isArray(data)) {
             data = [data];
         }
@@ -271,6 +274,9 @@ var ImmutableObjectType = (function () {
      * @memberof ImmutableObjectType
      */
     ImmutableObjectType.prototype.remove = function (obj, data) {
+        if (!data) {
+            return obj;
+        }
         if (!Array.isArray(data)) {
             data = [data];
         }
@@ -341,13 +347,17 @@ var ImmutableMapType = (function () {
      * @memberof ImmutableMapType
      */
     ImmutableMapType.prototype.add = function (obj, data) {
+        if (!data) {
+            return obj;
+        }
         if (!Array.isArray(data)) {
             data = [data];
         }
+        var self = this;
         return obj.withMutations(function (map) {
             var i, id;
             for (i = 0; i < data.length; i++) {
-                id = this.identity(data[i]);
+                id = self.identity(data[i]);
                 if (!map.has(id)) {
                     map = map.set(id, data[i]);
                 }
@@ -364,13 +374,17 @@ var ImmutableMapType = (function () {
      * @memberof ImmutableMapType
      */
     ImmutableMapType.prototype.remove = function (obj, data) {
+        if (!data) {
+            return obj;
+        }
         if (!Array.isArray(data)) {
             data = [data];
         }
+        var self = this;
         return obj.withMutations(function (map) {
             var i, id;
             for (i = 0; i < data.length; i++) {
-                id = this.identity(data[i]);
+                id = self.identity(data[i]);
                 map.remove(id, data[i]);
             }
             return map;

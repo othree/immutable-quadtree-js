@@ -197,3 +197,67 @@ describe('Immutable QuadTree Native Set', function () {
     g.should.equal(d);
   });
 });
+
+Immutable = require('../src/vendor/immutable');
+
+describe('Immutable QuadTree Native Set', function () {
+  
+  var a = new ImmutableQuadTree(4, {
+    datatype: ImmutableQuadTree.MapType
+  });
+
+  var ABC = {id: 'ABC'};
+  var BBB = {id: 'BBB'};
+
+  var b = a.add('0000', ABC);
+  var c = b.add('0000', ABC);
+  var d = c.add('0010', BBB);
+
+  it('Immutable Equality Check', function () {
+    a.should.not.equal(b);
+    b.should.equal(c);
+    c.should.not.equal(d);
+  });
+  it('Add', function () {
+    var e = d.add('0000', ABC);
+    e.should.equal(d);
+    e.query('0').length.should.equal(2);
+
+    var f = e.add('0000');
+    f.should.equal(e);
+  });
+  it('Remove', function () {
+    var e = d.remove('0000', ABC);
+    e.should.not.equal(d);
+    e.query('0').length.should.equal(1);
+    var f = d.remove('0010', BBB);
+    f.query('000').length.should.equal(1);
+    f.query('001').length.should.equal(0);
+    var g = f.remove('0010', BBB);
+    g.query('000').length.should.equal(1);
+    g.query('001').length.should.equal(0);
+    var h = f.remove('0010');
+    h.query('000').length.should.equal(1);
+    h.query('001').length.should.equal(0);
+  });
+  it('Query', function () {
+    var list = d.query();
+    list.length.should.equal(2);
+    list[0].should.equal(ABC);
+    list[1].should.equal(BBB);
+
+    d.query('000').length.should.equal(1);
+  });
+  it('Map', function () {
+    var e = d.map(null, function (elem) {
+      return {
+        id: elem.id,
+        value: 1
+      };
+    });
+    e.should.not.equal(d);
+    var g = d.map(null, function (elem) {
+    });
+    g.should.equal(d);
+  });
+});

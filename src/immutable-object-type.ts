@@ -49,6 +49,7 @@ class ImmutableObjectType {
    * @memberof ImmutableObjectType
    */
   add (obj, data: Array<any>) {
+    if (!data) { return obj; }
     if (!Array.isArray(data)) { data = [data]; }
 
     var i, id, flag = false;
@@ -74,6 +75,7 @@ class ImmutableObjectType {
    * @memberof ImmutableObjectType
    */
   remove (obj, data: Array<any>) {
+    if (!data) { return obj; }
     if (!Array.isArray(data)) { data = [data]; }
 
     var i, id, flag = false;
