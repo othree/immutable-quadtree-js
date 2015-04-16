@@ -17,7 +17,7 @@ clean:
 	rm build/*
 
 coverage: build/immutable-quadtree.js
-	istanbul cover _mocha -- -R spec
+	istanbul cover -x "**/vendor/**" _mocha -- -R spec
 
 test: build/immutable-quadtree.js
 	npm test
