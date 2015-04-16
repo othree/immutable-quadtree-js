@@ -229,7 +229,8 @@ describe('Immutable QuadTree Native Set', function () {
   it('Remove', function () {
     var e = d.remove('0000', ABC);
     e.should.not.equal(d);
-    e.query('0').length.should.equal(1);
+    e.query('000').length.should.equal(0);
+    e.query('001').length.should.equal(1);
     var f = d.remove('0010', BBB);
     f.query('000').length.should.equal(1);
     f.query('001').length.should.equal(0);

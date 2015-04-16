@@ -3,6 +3,7 @@
 /// <reference path="immutable-object-type.ts" />
 /// <reference path="immutable-array-type.ts" />
 /// <reference path="immutable-map-type.ts" />
+/// <reference path="immutable-list-type.ts" />
 
 /**
  * A string only contains `0`, `1`, `2`, `3`
@@ -29,6 +30,7 @@
  * @property {ImmutableObjectType} ObjectType Native object(map) data type tool
  * @property {ImmutableArrayType} ArrayType Native array(list) data type tool
  * @property {ImmutableMapType} MapType Immutable Map data type tool
+ * @property {ImmutableListType} ListType Immutable List data type tool
  * @template T, S
  */
 class ImmutableQuadTree extends QuadTreeRotue {
@@ -39,6 +41,7 @@ class ImmutableQuadTree extends QuadTreeRotue {
   public static ObjectType = ImmutableObjectType;
   public static ArrayType  = ImmutableArrayType;
   public static MapType  = ImmutableMapType;
+  public static ListType  = ImmutableListType;
   constructor(levels: number, options:any = {}, root?: Quaternary) {
     super();
     options.datatype = options.datatype || ImmutableObjectType;
