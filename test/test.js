@@ -1,6 +1,7 @@
 require('mocha');
 
 var should = require('should');
+var expect = require('expect');
 
 var ImmutableQuadTree = require('../');
 
@@ -19,6 +20,14 @@ describe('Immutable QuadTree Native Map', function () {
     b.should.equal(c);
     c.should.not.equal(d);
   });
+  it('Route Guard', function () {
+    should.throws(function () {a.query('00000')}, Error);
+    should.throws(function () {a.query('abcd')}, Error);
+    should.throws(function () {a.query('000a')}, Error);
+    should.throws(function () {a.query(123)}, Error);
+    should.throws(function () {a.query({k: 'v'})}, Error);
+    should.throws(function () {a.query(true)}, Error);
+  });
   it('Remove', function () {
     var e = d.remove('0000', ABC);
     e.should.not.equal(d);
@@ -34,6 +43,8 @@ describe('Immutable QuadTree Native Map', function () {
     h.query('001').length.should.equal(0);
     var i = h.remove('0000', ABC);
     i.should.equal(h);
+    var j = h.remove('2000', ABC);
+    j.should.equal(h);
   });
   it('Clean', function () {
     var e = d.clean('0');
@@ -138,6 +149,9 @@ describe('Immutable QuadTree Native Set', function () {
     var e = d.add('0000', ABC);
     e.should.not.equal(d);
     e.query('0').length.should.equal(4);
+
+    var f = e.add('0000');
+    f.should.equal(e);
   });
   it('Remove', function () {
     var e = d.remove('0000', ABC);
@@ -161,5 +175,17 @@ describe('Immutable QuadTree Native Set', function () {
     list[2].should.equal(BBB);
 
     d.query('000').length.should.equal(2);
+  });
+  it('Map', function () {
+    var e = d.map(null, function (elem) {
+      return {
+        id: elem.id,
+        value: 1
+      };
+    });
+    e.should.not.equal(d);
+    var g = d.map(null, function (elem) {
+    });
+    g.should.equal(d);
   });
 });

@@ -44,20 +44,18 @@ var ImmutableArrayType = (function () {
         this.identity = identity || function (obj) { return obj; };
     }
     ImmutableArrayType.prototype.add = function (obj, data) {
+        if (!data) {
+            return obj;
+        }
         if (!Array.isArray(data)) {
             data = [data];
         }
-        var i, id, flag = false;
+        var i, id;
         var newobj = obj.slice();
         if (data.length) {
             newobj = newobj.concat(data);
-            flag = true;
         }
-        if (flag) {
-            return newobj;
-        }
-        //no change
-        return obj;
+        return newobj;
     };
     ImmutableArrayType.prototype.remove = function (obj, data) {
         if (!Array.isArray(data)) {
@@ -186,9 +184,6 @@ var QuadTreeRotue = (function () {
     function QuadTreeRotue() {
     }
     QuadTreeRotue.prototype._fullRouteGuard = function (route, levels) {
-        if (!route) {
-            return;
-        }
         if (typeof route !== 'string'
             || route.length !== levels
             || /[^0-3]/.test(route)) {
