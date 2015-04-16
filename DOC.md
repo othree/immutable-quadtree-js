@@ -16,11 +16,14 @@
 <dt><a href="#route">route</a> : <code>string</code></dt>
 <dd><p>A string only contains <code>0</code>, <code>1</code>, <code>2</code>, <code>3</code></p>
 </dd>
+<dt><a href="#reducefunc">reducefunc</a> ⇒ <code>S</code></dt>
+<dd><p>Reducing function</p>
+</dd>
 </dl>
 <a name="ImmutableQuadTree"></a>
 ## ImmutableQuadTree
 **Kind**: global class  
-**Template**: T  
+**Template**: T, S  
 **Properties**
 
 | Name | Type | Description |
@@ -32,6 +35,7 @@
 * [ImmutableQuadTree](#ImmutableQuadTree)
   * [new ImmutableQuadTree(levels, options)](#new_ImmutableQuadTree_new)
   * [.map(qroute, f)](#ImmutableQuadTree.map) ⇒ <code>[ImmutableQuadTree](#ImmutableQuadTree)</code>
+  * [.reduce(qroute, f)](#ImmutableQuadTree.reduce) ⇒ <code>S</code>
   * [.add(qroute, data)](#ImmutableQuadTree.add) ⇒ <code>[ImmutableQuadTree](#ImmutableQuadTree)</code>
   * [.remove(qroute, data)](#ImmutableQuadTree.remove) ⇒ <code>[ImmutableQuadTree](#ImmutableQuadTree)</code>
   * [.clean(qroute)](#ImmutableQuadTree.clean) ⇒ <code>[ImmutableQuadTree](#ImmutableQuadTree)</code>
@@ -62,6 +66,18 @@ Map to every leaf data since given route.
 | --- | --- | --- |
 | qroute | <code>string</code> | Route of map root. |
 | f | <code>[mapfunc](#mapfunc)</code> | Function will execute on every leaf data. |
+
+<a name="ImmutableQuadTree.reduce"></a>
+### ImmutableQuadTree.reduce(qroute, f) ⇒ <code>S</code>
+Reduce every leaf data since given route.
+
+**Kind**: static method of <code>[ImmutableQuadTree](#ImmutableQuadTree)</code>  
+**Returns**: <code>S</code> - Reduced value  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| qroute | <code>string</code> | Route of reduce root. |
+| f | <code>[reducefunc](#reducefunc)</code> | Reducing function |
 
 <a name="ImmutableQuadTree.add"></a>
 ### ImmutableQuadTree.add(qroute, data) ⇒ <code>[ImmutableQuadTree](#ImmutableQuadTree)</code>
@@ -163,6 +179,19 @@ Mapping function
 A string only contains `0`, `1`, `2`, `3`
 
 **Kind**: global typedef  
+<a name="reducefunc"></a>
+## reducefunc ⇒ <code>S</code>
+Reducing function
+
+**Kind**: global typedef  
+**Returns**: <code>S</code> - Returned reduced value  
+**Template**: T, S  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| prev | <code>S</code> | Previous value |
+| curr | <code>T</code> | Current value, the data received |
+
 <a name="ImmutableObjectType"></a>
 ## ~ImmutableObjectType
 **Kind**: inner class  

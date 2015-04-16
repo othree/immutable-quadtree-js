@@ -9,6 +9,16 @@
  */
 
 /**
+ * @callback reducefunc
+ * @description Reducing function
+ * @param {S} prev Previous value
+ * @param {T} curr Current value, the data received
+ * @return {S} Returned reduced value
+ * @template T, S
+ */
+
+
+/**
  * @class ImmutableQuadTree
  * @description Basic Immutable Quad Tree class
  * @param {number} levels Quad tree levels
@@ -17,7 +27,7 @@
  * @param options.identity Function to get id of leaf data
  * @property {ImmutableObjectType} ObjectType Native object(map) data type tool
  * @property {ImmutableArrayType} ArrayType Native array(list) data type tool
- * @template T
+ * @template T, S
  */
 class ImmutableQuadTree extends QuadTreeRotue {
   _root: Quaternary;
@@ -55,6 +65,20 @@ class ImmutableQuadTree extends QuadTreeRotue {
     return path.current === newnode ?
       this :
       new ImmutableQuadTree(this._levels, this._options, this._replace(path, newnode));
+  }
+  /**
+   * @method reduce
+   * @description Reduce every leaf data since given route.
+   * @param {string} qroute Route of reduce root.
+   * @param {reducefunc} f Reducing function
+   * @return {S} Reduced value
+   * @memberof ImmutableQuadTree
+   */
+  reduce(qroute: string, f: (prev:any, curr:any) => any, init: any): any {
+    this.map(qroute, function (data) {
+      init = f(init, data);
+    });
+    return init;
   }
   /**
    * @method add

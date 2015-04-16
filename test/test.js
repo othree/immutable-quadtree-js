@@ -78,6 +78,15 @@ describe('Immutable QuadTree Native Map', function () {
     });
     e.should.not.equal(d);
   });
+  it('Reduce', function () {
+    d.reduce('', function (prev, curr) {
+      return prev + curr.id;
+    }, '__').should.equal('__ABCBBB');
+
+    d.reduce('001', function (prev, curr) {
+      return prev + curr.id;
+    }, '').should.equal('BBB');
+  });
 
   var aa = new ImmutableQuadTree(4, {
     datatype: ImmutableQuadTree.ObjectType,

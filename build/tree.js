@@ -334,6 +334,14 @@ var __extends = this.__extends || function (d, b) {
  * @typedef {string} route
  */
 /**
+ * @callback reducefunc
+ * @description Reducing function
+ * @param {S} prev Previous value
+ * @param {T} curr Current value, the data received
+ * @return {S} Returned reduced value
+ * @template T, S
+ */
+/**
  * @class ImmutableQuadTree
  * @description Basic Immutable Quad Tree class
  * @param {number} levels Quad tree levels
@@ -342,7 +350,7 @@ var __extends = this.__extends || function (d, b) {
  * @param options.identity Function to get id of leaf data
  * @property {ImmutableObjectType} ObjectType Native object(map) data type tool
  * @property {ImmutableArrayType} ArrayType Native array(list) data type tool
- * @template T
+ * @template T, S
  */
 var ImmutableQuadTree = (function (_super) {
     __extends(ImmutableQuadTree, _super);
@@ -375,6 +383,20 @@ var ImmutableQuadTree = (function (_super) {
         return path.current === newnode ?
             this :
             new ImmutableQuadTree(this._levels, this._options, this._replace(path, newnode));
+    };
+    /**
+     * @method reduce
+     * @description Reduce every leaf data since given route.
+     * @param {string} qroute Route of reduce root.
+     * @param {reducefunc} f Reducing function
+     * @return {S} Reduced value
+     * @memberof ImmutableQuadTree
+     */
+    ImmutableQuadTree.prototype.reduce = function (qroute, f, init) {
+        this.map(qroute, function (data) {
+            init = f(init, data);
+        });
+        return init;
     };
     /**
      * @method add
