@@ -12,7 +12,7 @@ class ImmutableMapType {
   cons: any;
   identity: (any) => string;
   constructor (identity?: (any) => string) {
-    if (!Immutable.Map) { throw('No Immutable Available.'); }
+    if (!Immutable) { throw('No Immutable Available.'); }
     this.cons = Immutable.Map; 
     this.identity = identity || function (obj) { return obj.id; };
   }
@@ -44,7 +44,7 @@ class ImmutableMapType {
   /**
    * @method remove
    * @description Remove data from the object
-   * @param {Immutable.Map} obj The data store native object
+   * @param {Immutable.Map} obj The data store immutable map
    * @param {T} data Data to remove from the object
    * @return {Immutable.Map} Return new object if any change, original object if no change
    * @memberof ImmutableMapType
@@ -59,7 +59,7 @@ class ImmutableMapType {
       var i, id;
       for (i = 0; i < data.length; i++) {
         id = self.identity(data[i]);
-        map.remove(id, data[i]);
+        map = map.remove(id, data[i]);
       }
       return map;
     });
