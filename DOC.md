@@ -13,6 +13,9 @@
 <dt><a href="#mapfunc">mapfunc</a> ⇒ <code>T</code></dt>
 <dd><p>Mapping function</p>
 </dd>
+<dt><a href="#mapperfunc">mapperfunc</a> ⇒ <code>T</code></dt>
+<dd><p>Iterator over native data store object.</p>
+</dd>
 <dt><a href="#route">route</a> : <code>string</code></dt>
 <dd><p>A string only contains <code>0</code>, <code>1</code>, <code>2</code>, <code>3</code></p>
 </dd>
@@ -30,6 +33,8 @@
 | --- | --- | --- |
 | ObjectType | <code>[ImmutableObjectType](#ImmutableObjectType)</code> | Native object(map) data type tool |
 | ArrayType | <code>ImmutableArrayType</code> | Native array(list) data type tool |
+| MapType | <code>[ImmutableMapType](#ImmutableMapType)</code> | Immutable Map data type tool |
+| ListType | <code>[ImmutableListType](#ImmutableListType)</code> | Immutable List data type tool |
 
 
 * [ImmutableQuadTree](#ImmutableQuadTree)
@@ -174,6 +179,18 @@ Mapping function
 | --- | --- | --- |
 | data | <code>T</code> | Data received |
 
+<a name="mapperfunc"></a>
+## mapperfunc ⇒ <code>T</code>
+Iterator over native data store object.
+
+**Kind**: global typedef  
+**Returns**: <code>T</code> - Return new object if any change.  
+**Template**: T  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| data | <code>T</code> | Native data store object |
+
 <a name="route"></a>
 ## route : <code>string</code>
 A string only contains `0`, `1`, `2`, `3`
@@ -201,7 +218,7 @@ Reducing function
   * [new ImmutableObjectType([identity])](#new_ImmutableObjectType_new)
   * [.add(obj, data)](#ImmutableObjectType.add) ⇒ <code>Object</code>
   * [.remove(obj, data)](#ImmutableObjectType.remove) ⇒ <code>Object</code>
-  * [.map(f)](#ImmutableObjectType.map) ⇒ <code>Object</code>
+  * [.map(f)](#ImmutableObjectType.map) ⇒ <code>[mapperfunc](#mapperfunc)</code>
 
 <a name="new_ImmutableObjectType_new"></a>
 ### new ImmutableObjectType([identity])
@@ -237,11 +254,121 @@ Remove data from the object
 | data | <code>T</code> | Data to remove from the object |
 
 <a name="ImmutableObjectType.map"></a>
-### ImmutableObjectType.map(f) ⇒ <code>Object</code>
+### ImmutableObjectType.map(f) ⇒ <code>[mapperfunc](#mapperfunc)</code>
 Map f function on all data, behaves like immutable.
 
 **Kind**: static method of <code>[ImmutableObjectType](#ImmutableObjectType)</code>  
-**Returns**: <code>Object</code> - Return new object if any change, original object if no change  
+**Returns**: <code>[mapperfunc](#mapperfunc)</code> - Function iterator over data store object  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| f | <code>[mapfunc](#mapfunc)</code> | Mapping function |
+
+<a name="ImmutableMapType"></a>
+## ~ImmutableMapType
+**Kind**: inner class  
+**Template**: T  
+
+* [~ImmutableMapType](#ImmutableMapType)
+  * [new ImmutableMapType([identity])](#new_ImmutableMapType_new)
+  * [.add(obj, data)](#ImmutableMapType.add) ⇒ <code>Immutable.Map</code>
+  * [.remove(obj, data)](#ImmutableMapType.remove) ⇒ <code>Immutable.Map</code>
+  * [.map(f)](#ImmutableMapType.map) ⇒ <code>[mapperfunc](#mapperfunc)</code>
+
+<a name="new_ImmutableMapType_new"></a>
+### new ImmutableMapType([identity])
+Leaf node data type tool for FB's Immutable.Map
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| [identity] | <code>[identity](#identity)</code> | function to get data id |
+
+<a name="ImmutableMapType.add"></a>
+### ImmutableMapType.add(obj, data) ⇒ <code>Immutable.Map</code>
+Add data to the object
+
+**Kind**: static method of <code>[ImmutableMapType](#ImmutableMapType)</code>  
+**Returns**: <code>Immutable.Map</code> - Return new object if any change, original object if no change  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| obj | <code>Immutable.Map</code> | The data store immutable map |
+| data | <code>T</code> | Data to store to the object |
+
+<a name="ImmutableMapType.remove"></a>
+### ImmutableMapType.remove(obj, data) ⇒ <code>Immutable.Map</code>
+Remove data from the object
+
+**Kind**: static method of <code>[ImmutableMapType](#ImmutableMapType)</code>  
+**Returns**: <code>Immutable.Map</code> - Return new object if any change, original object if no change  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| obj | <code>Immutable.Map</code> | The data store immutable map |
+| data | <code>T</code> | Data to remove from the object |
+
+<a name="ImmutableMapType.map"></a>
+### ImmutableMapType.map(f) ⇒ <code>[mapperfunc](#mapperfunc)</code>
+Map f function on all data, behaves like immutable.
+
+**Kind**: static method of <code>[ImmutableMapType](#ImmutableMapType)</code>  
+**Returns**: <code>[mapperfunc](#mapperfunc)</code> - Function iterator over immutable map  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| f | <code>[mapfunc](#mapfunc)</code> | Mapping function |
+
+<a name="ImmutableListType"></a>
+## ~ImmutableListType
+**Kind**: inner class  
+**Template**: T  
+
+* [~ImmutableListType](#ImmutableListType)
+  * [new ImmutableListType([identity])](#new_ImmutableListType_new)
+  * [.add(obj, data)](#ImmutableListType.add) ⇒ <code>Immutable.List</code>
+  * [.remove(obj, data)](#ImmutableListType.remove) ⇒ <code>Immutable.List</code>
+  * [.map(f)](#ImmutableListType.map) ⇒ <code>[mapperfunc](#mapperfunc)</code>
+
+<a name="new_ImmutableListType_new"></a>
+### new ImmutableListType([identity])
+Leaf node data type tool for FB's Immutable.Map
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| [identity] | <code>[identity](#identity)</code> | function to get data id |
+
+<a name="ImmutableListType.add"></a>
+### ImmutableListType.add(obj, data) ⇒ <code>Immutable.List</code>
+Add data to the object
+
+**Kind**: static method of <code>[ImmutableListType](#ImmutableListType)</code>  
+**Returns**: <code>Immutable.List</code> - Return new object if any change, original object if no change  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| obj | <code>Immutable.List</code> | The data store immutable list |
+| data | <code>T</code> | Data to store to the object |
+
+<a name="ImmutableListType.remove"></a>
+### ImmutableListType.remove(obj, data) ⇒ <code>Immutable.List</code>
+Remove data from the list
+
+**Kind**: static method of <code>[ImmutableListType](#ImmutableListType)</code>  
+**Returns**: <code>Immutable.List</code> - Return new object if any change, original object if no change  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| obj | <code>Immutable.List</code> | The data store immutable list |
+| data | <code>T</code> | Data to remove from the object |
+
+<a name="ImmutableListType.map"></a>
+### ImmutableListType.map(f) ⇒ <code>[mapperfunc](#mapperfunc)</code>
+Map f function on all data, behaves like immutable.
+
+**Kind**: static method of <code>[ImmutableListType](#ImmutableListType)</code>  
+**Returns**: <code>[mapperfunc](#mapperfunc)</code> - Function iterator over immutable map  
 
 | Param | Type | Description |
 | --- | --- | --- |
