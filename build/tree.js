@@ -217,6 +217,13 @@ var QuadTreeRotue = (function () {
  * @template T
  */
 /**
+ * @callback mapperfunc
+ * @description Iterator over native data store object.
+ * @param {T} data Native data store object
+ * @return {T} Return new object if any change.
+ * @template T
+ */
+/**
  * @class ImmutableObjectType
  * @description Leaf node data type tool for native object. Behaves like immutable map
  * @param {identity} [identity] function to get data id
@@ -287,7 +294,7 @@ var ImmutableObjectType = (function () {
      * @method map
      * @description Map f function on all data, behaves like immutable.
      * @param {mapfunc} f Mapping function
-     * @return {Object} Return new object if any change, original object if no change
+     * @return {mapperfunc} Function iterator over data store object
      * @memberof ImmutableObjectType
      */
     ImmutableObjectType.prototype.map = function (f) {
@@ -310,10 +317,93 @@ var ImmutableObjectType = (function () {
     return ImmutableObjectType;
 })();
 ;
+/**
+ * @class ImmutableMapType
+ * @description Leaf node data type tool for FB's Immutable.Map
+ * @param {identity} [identity] function to get data id
+ * @template T
+ * @inner
+ */
+var ImmutableMapType = (function () {
+    function ImmutableMapType(identity) {
+        if (!Immutable.Map) {
+            throw ('No Immutable Available.');
+        }
+        this.cons = Immutable.Map;
+        this.identity = identity || function (obj) { return obj.id; };
+    }
+    /**
+     * @method add
+     * @description Add data to the object
+     * @param {Immutable.Map} obj The data store immutable map
+     * @param {T} data Data to store to the object
+     * @return {Immutable.Map} Return new object if any change, original object if no change
+     * @memberof ImmutableMapType
+     */
+    ImmutableMapType.prototype.add = function (obj, data) {
+        if (!Array.isArray(data)) {
+            data = [data];
+        }
+        return obj.withMutations(function (map) {
+            var i, id;
+            for (i = 0; i < data.length; i++) {
+                id = this.identity(data[i]);
+                if (!map.has(id)) {
+                    map = map.set(id, data[i]);
+                }
+            }
+            return map;
+        });
+    };
+    /**
+     * @method remove
+     * @description Remove data from the object
+     * @param {Immutable.Map} obj The data store native object
+     * @param {T} data Data to remove from the object
+     * @return {Immutable.Map} Return new object if any change, original object if no change
+     * @memberof ImmutableMapType
+     */
+    ImmutableMapType.prototype.remove = function (obj, data) {
+        if (!Array.isArray(data)) {
+            data = [data];
+        }
+        return obj.withMutations(function (map) {
+            var i, id;
+            for (i = 0; i < data.length; i++) {
+                id = this.identity(data[i]);
+                map.remove(id, data[i]);
+            }
+            return map;
+        });
+    };
+    /**
+     * @method map
+     * @description Map f function on all data, behaves like immutable.
+     * @param {mapfunc} f Mapping function
+     * @return {mapperfunc} Function iterator over immutable map
+     * @memberof ImmutableMapType
+     */
+    ImmutableMapType.prototype.map = function (f) {
+        return function (obj) {
+            return obj.withMutations(function (map) {
+                obj.forEach(function (v, k) {
+                    var newv = f(v);
+                    if (newv && newv !== v) {
+                        map = map.set(k, newv);
+                    }
+                });
+                return map;
+            });
+        };
+    };
+    return ImmutableMapType;
+})();
+;
 /// <reference path="quadtree-route.ts" />
 /// <reference path="quaternary.ts" />
 /// <reference path="immutable-object-type.ts" />
 /// <reference path="immutable-array-type.ts" />
+/// <reference path="immutable-map-type.ts" />
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -341,6 +431,7 @@ var __extends = this.__extends || function (d, b) {
  * @param options.identity Function to get id of leaf data
  * @property {ImmutableObjectType} ObjectType Native object(map) data type tool
  * @property {ImmutableArrayType} ArrayType Native array(list) data type tool
+ * @property {ImmutableMapType} MapType Immutable Map data type tool
  * @template T, S
  */
 var ImmutableQuadTree = (function (_super) {
@@ -517,5 +608,6 @@ var ImmutableQuadTree = (function (_super) {
     });
     ImmutableQuadTree.ObjectType = ImmutableObjectType;
     ImmutableQuadTree.ArrayType = ImmutableArrayType;
+    ImmutableQuadTree.MapType = ImmutableMapType;
     return ImmutableQuadTree;
 })(QuadTreeRotue);

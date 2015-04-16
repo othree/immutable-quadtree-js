@@ -17,6 +17,14 @@
  * @template T
  */
 
+/**
+ * @callback mapperfunc
+ * @description Iterator over native data store object.
+ * @param {T} data Native data store object
+ * @return {T} Return new object if any change.
+ * @template T
+ */
+
 
 /**
  * @class ImmutableObjectType
@@ -87,7 +95,7 @@ class ImmutableObjectType {
    * @method map
    * @description Map f function on all data, behaves like immutable.
    * @param {mapfunc} f Mapping function
-   * @return {Object} Return new object if any change, original object if no change
+   * @return {mapperfunc} Function iterator over data store object
    * @memberof ImmutableObjectType
    */
   map (f: (any) => any): (Object) => Object {

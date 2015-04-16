@@ -2,6 +2,7 @@
 /// <reference path="quaternary.ts" />
 /// <reference path="immutable-object-type.ts" />
 /// <reference path="immutable-array-type.ts" />
+/// <reference path="immutable-map-type.ts" />
 
 /**
  * A string only contains `0`, `1`, `2`, `3`
@@ -27,6 +28,7 @@
  * @param options.identity Function to get id of leaf data
  * @property {ImmutableObjectType} ObjectType Native object(map) data type tool
  * @property {ImmutableArrayType} ArrayType Native array(list) data type tool
+ * @property {ImmutableMapType} MapType Immutable Map data type tool
  * @template T, S
  */
 class ImmutableQuadTree extends QuadTreeRotue {
@@ -36,6 +38,7 @@ class ImmutableQuadTree extends QuadTreeRotue {
   _dt: any;
   public static ObjectType = ImmutableObjectType;
   public static ArrayType  = ImmutableArrayType;
+  public static MapType  = ImmutableMapType;
   constructor(levels: number, options:any = {}, root?: Quaternary) {
     super();
     options.datatype = options.datatype || ImmutableObjectType;

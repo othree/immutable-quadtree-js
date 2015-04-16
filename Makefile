@@ -1,5 +1,6 @@
 srouces  = src/immutable-object-type.ts 
 sources += src/immutable-array-type.ts 
+srouces  = src/immutable-map-type.ts 
 sources += src/quadtree-route.ts
 sources += src/quaternary.ts
 sources += src/tree.ts
