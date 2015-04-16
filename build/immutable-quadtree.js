@@ -1,10 +1,12 @@
 (function (global, factory) {
+  /* istanbul ignore next */
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
   typeof define === 'function' && define.amd ? define(factory) :
   global.ImmutableQuadTree = factory()
 }(this, function () {
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign#Polyfill
 
+/* istanbul ignore next */
 if (!Object.assign) {
   Object.defineProperty(Object, 'assign', {
     enumerable: false,

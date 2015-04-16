@@ -1,5 +1,6 @@
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign#Polyfill
 
+/* istanbul ignore next */
 if (!Object.assign) {
   Object.defineProperty(Object, 'assign', {
     enumerable: false,
