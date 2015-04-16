@@ -27,6 +27,14 @@ describe('Immutable QuadTree Native Map', function () {
     should.throws(function () {a.query(123)}, Error);
     should.throws(function () {a.query({k: 'v'})}, Error);
     should.throws(function () {a.query(true)}, Error);
+
+    should.throws(function () {a.remove('000')}, Error);
+    should.throws(function () {a.remove('00000')}, Error);
+    should.throws(function () {a.remove('abcd')}, Error);
+    should.throws(function () {a.remove('000a')}, Error);
+    should.throws(function () {a.remove(123)}, Error);
+    should.throws(function () {a.remove({k: 'v'})}, Error);
+    should.throws(function () {a.remove(true)}, Error);
   });
   it('Remove', function () {
     var e = d.remove('0000', ABC);
