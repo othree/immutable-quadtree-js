@@ -5,22 +5,29 @@ sources += src/quadtree-route.ts
 sources += src/quaternary.ts
 sources += src/tree.ts
 
-all: build/immutable-quadtree.js
+buildlh  = src/resource/header.js.tmpl
+buildlh += src/vendor/object-assign.js
 
-build/immutable-quadtree.js: build/tree.js
-	cat src/resource/header.js.tmpl src/vendor/object-assign.js $? src/resource/footer.js.tmpl > $@
+buildrh  = src/resource/footer.js.tmpl
 
-build/tree.js: $(sources)
+target   = dist/immutable-quadtree.js
+
+all: $(target)
+
+$(target): $(buildlh) dist/tree.js $(buildrh)
+	cat $? > $@
+
+dist/tree.js: $(sources)
 	tsc -t ES5 $(sources) --out $@
 
 clean:
-	rm build/*
+	rm dist/*
 
-coverage: build/immutable-quadtree.js
+coverage: $(target)
 	istanbul cover -x "**/vendor/**" _mocha -- -R spec
 
-test: build/immutable-quadtree.js
+test: $(target)
 	npm test
 
-doc: build/immutable-quadtree.js
+doc: $(target)
 	jsdoc2md build/immutable-quadtree.js > DOC.md

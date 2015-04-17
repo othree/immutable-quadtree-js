@@ -11,7 +11,7 @@
     "type": "git",
     "url": "git://github.com/othree/immutable-quadtree-js.git"
   },
-  "main": "build/immutable-quadtree.js",
+  "main": "dist/immutable-quadtree.js",
   "engines": {
     "node": ">=0.8.0"
   },
