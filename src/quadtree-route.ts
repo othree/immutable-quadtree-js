@@ -6,7 +6,7 @@ interface Path {
   nodes: Quaternary[];
 }
 
-class QuadTreeRotue {
+class QuadtreeRotue {
   _fullRouteGuard(route: string, levels: number) {
     if (typeof route !== 'string'
      || route.length !== levels

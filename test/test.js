@@ -3,10 +3,10 @@ require('mocha');
 var should = require('should');
 var expect = require('expect');
 
-var ImmutableQuadTree = require('../');
+var ImmutableQuadtree = require('../');
 
-describe('Immutable QuadTree Native Map', function () {
-  var a = new ImmutableQuadTree(4);
+describe('Immutable Quadtree Native Map', function () {
+  var a = new ImmutableQuadtree(4);
 
   var ABC = {id: 'ABC'};
   var BBB = {id: 'BBB'};
@@ -116,8 +116,8 @@ describe('Immutable QuadTree Native Map', function () {
     }, '').should.equal('BBB');
   });
 
-  var aa = new ImmutableQuadTree(4, {
-    datatype: ImmutableQuadTree.ObjectType,
+  var aa = new ImmutableQuadtree(4, {
+    datatype: ImmutableQuadtree.ObjectType,
     identity: function (o) { return o._id; }
   });
 
@@ -136,9 +136,9 @@ describe('Immutable QuadTree Native Map', function () {
   });
 });
 
-describe('Immutable QuadTree Native Set', function () {
-  var a = new ImmutableQuadTree(4, {
-    datatype: ImmutableQuadTree.ArrayType
+describe('Immutable Quadtree Native Set', function () {
+  var a = new ImmutableQuadtree(4, {
+    datatype: ImmutableQuadtree.ArrayType
   });
 
   var ABC = {id: 'ABC'};
@@ -200,10 +200,10 @@ describe('Immutable QuadTree Native Set', function () {
 
 Immutable = require('../src/vendor/immutable');
 
-describe('Immutable QuadTree Native Set', function () {
+describe('Immutable Quadtree Native Set', function () {
   
-  var a = new ImmutableQuadTree(4, {
-    datatype: ImmutableQuadTree.MapType
+  var a = new ImmutableQuadtree(4, {
+    datatype: ImmutableQuadtree.MapType
   });
 
   var ABC = {id: 'ABC'};

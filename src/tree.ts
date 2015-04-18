@@ -33,7 +33,7 @@
  * @property {ImmutableListType} ListType Immutable List data type tool
  * @template T, S
  */
-class ImmutableQuadTree extends QuadTreeRotue {
+class ImmutableQuadtree extends QuadtreeRotue {
   _root: Quaternary;
   _levels: number;
   _options: Object;
@@ -55,10 +55,10 @@ class ImmutableQuadTree extends QuadTreeRotue {
    * @description Map to every leaf data since given route.
    * @param {string} qroute Route of map root.
    * @param {mapfunc} f Function will execute on every leaf data.
-   * @return {ImmutableQuadTree} New tree
-   * @memberof ImmutableQuadTree
+   * @return {ImmutableQuadtree} New tree
+   * @memberof ImmutableQuadtree
    */
-  map(qroute: string, f: (any) => any): ImmutableQuadTree {
+  map(qroute: string, f: (any) => any): ImmutableQuadtree {
     this._partialRouteGuard(qroute, this._levels);
     var route = this._parse(qroute);
     var path = this._goto(route, this._root);
@@ -70,7 +70,7 @@ class ImmutableQuadTree extends QuadTreeRotue {
 
     return path.current === newnode ?
       this :
-      new ImmutableQuadTree(this._levels, this._options, this._replace(path, newnode));
+      new ImmutableQuadtree(this._levels, this._options, this._replace(path, newnode));
   }
   /**
    * @method reduce
@@ -78,7 +78,7 @@ class ImmutableQuadTree extends QuadTreeRotue {
    * @param {string} qroute Route of reduce root.
    * @param {reducefunc} f Reducing function
    * @return {S} Reduced value
-   * @memberof ImmutableQuadTree
+   * @memberof ImmutableQuadtree
    */
   reduce(qroute: string, f: (prev:any, curr:any) => any, init: any): any {
     this.map(qroute, function (data) {
@@ -91,10 +91,10 @@ class ImmutableQuadTree extends QuadTreeRotue {
    * @description Add data to leaf node
    * @param {route} qroute Full length route.
    * @param {T} data Data store to leaf node
-   * @return {ImmutableQuadTree} New tree if any change. Self if no change.
-   * @memberof ImmutableQuadTree
+   * @return {ImmutableQuadtree} New tree if any change. Self if no change.
+   * @memberof ImmutableQuadtree
    */
-  add(qroute: string, data: any[]|any): ImmutableQuadTree {
+  add(qroute: string, data: any[]|any): ImmutableQuadtree {
     this._fullRouteGuard(qroute, this._levels);
     var leafs, newleafs, newnode;
     var route = this._parse(qroute);
@@ -112,17 +112,17 @@ class ImmutableQuadTree extends QuadTreeRotue {
       newnode = new Quaternary();
       newnode._setData(newleafs);
     }
-    return new ImmutableQuadTree(this._levels, this._options, this._replace(path, newnode));
+    return new ImmutableQuadtree(this._levels, this._options, this._replace(path, newnode));
   }
   /**
    * @method remove
    * @description Remove data to leaf node
    * @param {route} qroute Full length route.
    * @param {T} data Data store to leaf node
-   * @return {ImmutableQuadTree} New tree if any change. Self if no change.
-   * @memberof ImmutableQuadTree
+   * @return {ImmutableQuadtree} New tree if any change. Self if no change.
+   * @memberof ImmutableQuadtree
    */
-  remove(qroute: string, data: any[]|any): ImmutableQuadTree {
+  remove(qroute: string, data: any[]|any): ImmutableQuadtree {
     this._fullRouteGuard(qroute, this._levels);
     var leafs, newleafs, newnode;
     var route = this._parse(qroute);
@@ -134,7 +134,7 @@ class ImmutableQuadTree extends QuadTreeRotue {
       //no change
       if (leafs === newleafs) { return this; }
       newnode = path.current.setData(newleafs);
-      return new ImmutableQuadTree(this._levels, this._options, this._replace(path, newnode));
+      return new ImmutableQuadtree(this._levels, this._options, this._replace(path, newnode));
     }
     return this;
   }
@@ -142,15 +142,15 @@ class ImmutableQuadTree extends QuadTreeRotue {
    * @method clean
    * @description Clean all data under route
    * @param {?route} qroute Route to clean.
-   * @return {ImmutableQuadTree} New tree if any change. Self if no change.
-   * @memberof ImmutableQuadTree
+   * @return {ImmutableQuadtree} New tree if any change. Self if no change.
+   * @memberof ImmutableQuadtree
    */
-  clean(qroute?: string): ImmutableQuadTree {
+  clean(qroute?: string): ImmutableQuadtree {
     this._partialRouteGuard(qroute, this._levels);
     var route = this._parse(qroute);
     var path = this._goto(route, this._root);
     if (path.current && path.current.children.length) {
-      return new ImmutableQuadTree(this._levels, this._options, this._replace(path, null));
+      return new ImmutableQuadtree(this._levels, this._options, this._replace(path, null));
     } else {
       return this;
     }
@@ -159,10 +159,10 @@ class ImmutableQuadTree extends QuadTreeRotue {
    * @method keep
    * @description Remove all data except given route.
    * @param {?route} qroute Data under the route will keep
-   * @return {ImmutableQuadTree} New tree if any change. Self if no change.
-   * @memberof ImmutableQuadTree
+   * @return {ImmutableQuadtree} New tree if any change. Self if no change.
+   * @memberof ImmutableQuadtree
    */
-  keep(qroute?: string): ImmutableQuadTree {
+  keep(qroute?: string): ImmutableQuadtree {
     this._partialRouteGuard(qroute, this._levels);
     var route = this._parse(qroute);
     var path = this._goto(route, this._root);
@@ -176,7 +176,7 @@ class ImmutableQuadTree extends QuadTreeRotue {
     }
     if (changed) {
       path.nodes = [];
-      return new ImmutableQuadTree(this._levels, this._options, this._replace(path, path.current));
+      return new ImmutableQuadtree(this._levels, this._options, this._replace(path, path.current));
     } else {
       return this;
     }
@@ -186,7 +186,7 @@ class ImmutableQuadTree extends QuadTreeRotue {
    * @description Query all data under qroute
    * @param {?route} qroute Data under the route will return
    * @return {Array.<T>} Array of query data on leaf nodes
-   * @memberof ImmutableQuadTree
+   * @memberof ImmutableQuadtree
    */
   query(qroute?: string): any[] {
     var list = [];
@@ -199,7 +199,7 @@ class ImmutableQuadTree extends QuadTreeRotue {
    * @property query
    * @description Getter to query all data under root
    * @return {Array.<T>} Array of all data on leaf nodes
-   * @memberof ImmutableQuadTree
+   * @memberof ImmutableQuadtree
    */
   get list() {
     return this.query();

@@ -1,6 +1,13 @@
 (function (global, factory) {
-  /* istanbul ignore next */
-  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-  typeof define === 'function' && define.amd ? define(factory) :
-  global.ImmutableQuadTree = factory()
-}(this, function () {
+  if (typeof define === 'function' && define.amd) {
+    define('immutable-quadtree', ['exports', 'module', 'immutable'], factory);
+  } else if (typeof exports !== 'undefined' && typeof module !== 'undefined') {
+    factory(exports, module, require('immutable'));
+  } else {
+    var mod = {
+      exports: {}
+    };
+    factory(mod.exports, mod, global.Immutable);
+    global.ImmutableQuadtree = mod.exports;
+  }
+})(this, function (exports, module, Immutable) {

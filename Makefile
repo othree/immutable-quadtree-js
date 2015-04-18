@@ -15,7 +15,7 @@ target   = dist/immutable-quadtree.js
 all: $(target)
 
 $(target): $(buildlh) dist/tree.js $(buildrh)
-	cat $? > $@
+	cat $(buildlh) dist/tree.js $(buildrh) > $@
 
 dist/tree.js: $(sources)
 	tsc -t ES5 $(sources) --out $@
