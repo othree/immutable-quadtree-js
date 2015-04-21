@@ -26,6 +26,9 @@ clean:
 coverage: $(target)
 	istanbul cover -x "**/vendor/**" _mocha -- -R spec
 
+coverall: $(target)
+	istanbul cover -x "**/vendor/**" ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
+
 test: $(target)
 	npm test
 
