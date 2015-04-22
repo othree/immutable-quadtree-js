@@ -16,9 +16,9 @@
     "node": ">=0.8.0"
   },
   "dependencies": {
-    "immutable": "*"
   },
   "devDependencies": {
+    "immutable": "*",
     "mocha": "*",
     "should": "*",
     "expect": "*",
