@@ -1,0 +1,23 @@
+{
+  "name": "immutable-quadtree",
+  "main": "dist/immutable-quadtree.js",
+  "version": "0.0.2",
+  "homepage": "https://github.com/othree/immutable-quadtree-js",
+  "authors": [
+    "othree <othree@gmail.com>"
+  ],
+  "description": "Immutable Quadtree in JS",
+  "keywords": [
+    "immutable",
+    "quadtree"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "node_modules",
+    "package.json",
+    "test/",
+    "dist/tree.js",
+    "Makefile",
+    "*.md"
+  ]
+}

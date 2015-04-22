@@ -1,6 +1,6 @@
 {
   "name": "immutable-quadtree",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Immutable QuadTree",
   "homepage": "https://github.com/othree/immutable-quadtree-js",
   "author": {
