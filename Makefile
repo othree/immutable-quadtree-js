@@ -33,4 +33,4 @@ test: $(target)
 	npm test
 
 doc: $(target)
-	jsdoc2md build/immutable-quadtree.js > DOC.md
+	jsdoc2md dist/immutable-quadtree.js > DOC.md
